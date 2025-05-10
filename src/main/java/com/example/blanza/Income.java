@@ -1,19 +1,25 @@
+package com.example.blanza;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Income {
+
     private String income_source;
-    private float amount;
-    private float total_income;
-    private String pay_date;
+    private double amount;
+    private double total_income;
+    private LocalDate pay_date;
     private int user_id;
 
 
-    public Income(String source , float value )
+    public Income(String source , float value , LocalDate pay_date)
     {
         this.income_source = source;
         this.amount = value;
+        this.pay_date = pay_date;
+        this.total_income = 0.0;
+
     }
-    public float getTotalIncome(){
+    public double getTotalIncome(){
         return total_income;
     }
     public void setTotalIncome(float total){
@@ -21,29 +27,32 @@ public class Income {
     }
     public String getIncomeSource(){
         return income_source;
-
     }
     public void setIncomeSource(String source){
         this.income_source = source;
     }
-    public float getAmount(){
+    public double getAmount(){
         return amount;
     }
     public void setAmount(float value){
         this.amount = value;
     }
-    public String getPay_date(){
+    public LocalDate getPay_date(){
         return pay_date;
     }
-    public void setPay_date(String date){
+    public void setPay_date(LocalDate date){
         this.pay_date = date;
-
     }
     public int getUser_id(){
         return user_id;
     }
     public void setUser_id(int id){
         this.user_id = id;
+    }
+
+
+    public void updateTotalIncome() {
+        this.total_income += this.amount;
     }
 
 

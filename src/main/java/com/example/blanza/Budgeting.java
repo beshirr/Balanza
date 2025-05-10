@@ -1,3 +1,6 @@
+package com.example.blanza;
+ import java.time.LocalDate;
+
 public class Budgeting {
 
     private String category;
@@ -42,6 +45,10 @@ public class Budgeting {
     }
     public void setRemaining_budget(double remaining_budget) {
         this.remaining_budget = remaining_budget;
+    }
+
+    public void updateRemainingBudget() {
+        this.remaining_budget = this.budgetAmount - this.actual_spend;
     }
 
 
