@@ -12,6 +12,13 @@ import java.util.Objects;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+//        int userId = SessionManager.loadSession();
+//        if (userId != -1) {
+//            Session.setCurrentUserId(userId);
+//            // Load the main page
+//        } else {
+//            // Load the index page so user either login or sign up
+//        }
         SceneController.setStage(stage);
 
         //مؤقتا كل واحد يحط اسم الفايل اللي شغال عليه

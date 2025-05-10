@@ -11,4 +11,24 @@
             fx:controller="com.example.blanza.TrackExpenses"
             prefHeight="400.0" prefWidth="600.0">
 
+    <VBox>
+        <Label styleClass="title">Expense Tracker</Label>
+        <HBox styleClass="dashboard-container">
+            <Label styleClass="">Balance</Label>
+            <Label styleClass="">Income</Label>
+            <Label styleClass="">Expenses</Label>
+        </HBox>
+        <Button styleClass="primary-button">+ Add Expense</Button>
+        <ListView styleClass="list-container">
+            <!-- hard coded values for now-->
+            <HBox styleClass="list-element">
+                <Label styleClass="">description</Label>
+                <Label styleClass="">amount</Label>
+                <Label styleClass="">category</Label>
+                <Label styleClass="">payment method</Label>
+                <Label styleClass="">date</Label>
+            </HBox>
+        </ListView>
+        <Button styleClass="secondary-button">View Reports</Button>
+    </VBox>
 </AnchorPane>
