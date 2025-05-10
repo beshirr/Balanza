@@ -11,7 +11,7 @@ public class Income {
     private int user_id;
 
 
-    public Income(String source , float value , LocalDate pay_date)
+    public Income(String source , double value , LocalDate pay_date)
     {
         this.income_source = source;
         this.amount = value;
@@ -22,7 +22,7 @@ public class Income {
     public double getTotalIncome(){
         return total_income;
     }
-    public void setTotalIncome(float total){
+    public void setTotalIncome(double total){
         this.total_income = total;
     }
     public String getIncomeSource(){
@@ -34,7 +34,7 @@ public class Income {
     public double getAmount(){
         return amount;
     }
-    public void setAmount(float value){
+    public void setAmount(double value){
         this.amount = value;
     }
     public LocalDate getPay_date(){

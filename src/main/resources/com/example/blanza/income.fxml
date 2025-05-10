@@ -13,7 +13,7 @@
 <?import javafx.scene.control.Alert.AlertType?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
-            fx:controller="com.example.blanza.IncomeController"
+            fx:controller="com.example.blanza.IncomeTrackingController"
             prefHeight="400.0" prefWidth="600.0">
 
     <Label text="Income Source:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
