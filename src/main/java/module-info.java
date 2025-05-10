@@ -5,6 +5,7 @@ module com.example.blanza {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
     requires java.mail;
+    requires io.github.cdimascio.dotenv.java;
 
     opens com.example.blanza to javafx.fxml;
     exports com.example.blanza;

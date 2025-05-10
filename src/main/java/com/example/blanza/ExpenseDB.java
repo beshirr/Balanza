@@ -1,30 +1,20 @@
 package com.example.blanza;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseDB {
-    private static final String DB_URL = "jdbc:sqlite:Balanza.db";
-
-    public ExpenseDB() {
-        createTableIfNotExists();
-    }
-
-    private void createTableIfNotExists() {
-        String sql = SQLLoader.get("create_table");
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    Dotenv dotenv = Dotenv.configure().directory(".").load();
+    private final String DB_URL = dotenv.get("DB_URL");
+    private final String DB_USER = dotenv.get("DB_USER");
+    private final String DB_PASSWORD = dotenv.get("DB_PASSWORD");
 
     public void insertExpense(Expense e) {
         String sql = SQLLoader.get("insert_expense");
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, e.getCategory());
             pstmt.setFloat(2, e.getAmount());
@@ -40,7 +30,7 @@ public class ExpenseDB {
         List<Expense> expenses = new ArrayList<>();
         String sql = SQLLoader.get("select_all_expenses");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
