@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Alert?>
+<?import javafx.scene.control.Alert.AlertType?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
+            fx:controller="com.example.blanza.IncomeController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <Label text="Income Source:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+    <TextField fx:id="sourceField" promptText="Enter income source"
+               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="20.0" prefWidth="200.0"/>
+
+    <Label text="Income Amount:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="60.0"/>
+    <TextField fx:id="amountField" promptText="Enter income amount"
+               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="60.0" prefWidth="200.0"/>
+
+    <Button text="Save Income" fx:id="saveButton"
+            AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="100.0" onAction="#handleSaveIncome"/>
+
+    <Label fx:id="totalIncomeLabel" text="Total Income: 0.0"
+           AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="140.0"/>
+</AnchorPane>
