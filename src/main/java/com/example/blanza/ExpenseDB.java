@@ -1,10 +1,12 @@
+package com.example.blanza;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseDB {
-    private static final String DB_URL = "jdbc:sqlite:budget_app.db";
+    private static final String DB_URL = "jdbc:sqlite:Balanza.db";
 
     public ExpenseDB() {
         createTableIfNotExists();

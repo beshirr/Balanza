@@ -1,3 +1,5 @@
+package com.example.blanza;
+
 import java.time.LocalDateTime;
 
 public class Reminder implements Comparable<Reminder> {

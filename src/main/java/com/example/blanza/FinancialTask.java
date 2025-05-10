@@ -1,3 +1,5 @@
+package com.example.blanza;
+
 public class FinancialTask {
     private String type;
     private float amount;

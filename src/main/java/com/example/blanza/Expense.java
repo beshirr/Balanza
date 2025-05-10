@@ -1,3 +1,5 @@
+package com.example.blanza;
+
 import java.time.LocalDate;
 
 public class Expense {
