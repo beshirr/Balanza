@@ -12,11 +12,18 @@ import java.util.Objects;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+//        int userId = SessionManager.loadSession();
+//        if (userId != -1) {
+//            Session.setCurrentUserId(userId);
+//            // Load the main page
+//        } else {
+//            // Load the index page so user either login or sign up
+//        }
         SceneController.setStage(stage);
 
         //مؤقتا كل واحد يحط اسم الفايل اللي شغال عليه
         // محدش يرفع الفايل دا على جت لحد ما نخلص الفايللت كلها و نربطهم
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("track_expenses.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Income.fxml")));
         stage.setTitle("BALANZA");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();

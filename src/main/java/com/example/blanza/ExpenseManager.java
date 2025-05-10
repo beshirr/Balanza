@@ -7,12 +7,28 @@ public class ExpenseManager {
     private List<Expense> expenses = new ArrayList<>();
     private final ExpenseDB db = new ExpenseDB();
 
+    public ExpenseManager() {
+        expenses = db.getAllExpenses();
+    }
+
     public void addExpense(Expense expense) {
         if (validateExpense(expense)) {
             expenses.add(expense);
             updateBudget(expense);
             db.insertExpense(expense);
         }
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public float getTotalExpenses() {
+        float total = 0;
+        for (Expense expense : expenses) {
+            total += expense.getAmount();
+        }
+        return total;
     }
 
     private boolean validateExpense(Expense expense) {
