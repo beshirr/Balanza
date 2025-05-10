@@ -16,7 +16,7 @@ public class Main extends Application {
 
         //مؤقتا كل واحد يحط اسم الفايل اللي شغال عليه
         // محدش يرفع الفايل دا على جت لحد ما نخلص الفايللت كلها و نربطهم
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("track_expenses.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Income.fxml")));
         stage.setTitle("BALANZA");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
