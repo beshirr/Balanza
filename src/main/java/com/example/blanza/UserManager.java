@@ -3,10 +3,12 @@ package com.example.blanza;
 public class UserManager {
     public static boolean signupProcess(String username, String email, String phoneNumber, String password, String confirmPassword) {
         // TO DO
+        return false;
     }
 
     public static boolean loginProcess(String email, String password){
         // TO DO
+        return false;
     }
 
     private boolean signupValidation(String username, String email, String phoneNumber, String password, String confirmPassword){
