@@ -8,11 +8,11 @@ CREATE TABLE expenses (
 );
 
 -- @insert_expense
-INSERT INTO expenses(category, amount, date, payment_method)
-VALUES(@category, @amount, @date, @payment_method);
+INSERT INTO expenses(user_id, category, amount, date, payment_method)
+VALUES(?, ?, ?, ?, ?);
 
 -- @select_all_expenses
-SELECT * FROM expenses;
+SELECT * FROM expenses WHERE user_id=?;
 
 -- @delete_expense_by_id
-DELETE FROM expenses WHERE id = @id;
+DELETE FROM expenses WHERE id = ?;

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class SQLLoader {
-    private static final String SQL_FILE_PATH = "../sql/expense_queries.sql";
+    private static final String SQL_FILE_PATH = "../sql/expense_queries.sqlite";
     private static final HashMap<String, String> queries = new HashMap<>();
 
     static {

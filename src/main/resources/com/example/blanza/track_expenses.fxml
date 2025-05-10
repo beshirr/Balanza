@@ -14,9 +14,9 @@
     <VBox>
         <Label styleClass="title">Expense Tracker</Label>
         <HBox styleClass="dashboard-container">
-            <Label styleClass="">Balance</Label>
-            <Label styleClass="">Income</Label>
-            <Label styleClass="">Expenses</Label>
+            <Label styleClass="" fx:id="balance">Balance</Label>
+            <Label styleClass="" fx:id="income">Income</Label>
+            <Label styleClass="" fx:id="expenses">Expenses</Label>
         </HBox>
         <Button styleClass="primary-button">+ Add Expense</Button>
         <ListView styleClass="list-container">
@@ -29,6 +29,8 @@
                 <Label styleClass="">date</Label>
             </HBox>
         </ListView>
+        <ListView fx:id="expenseListView"/>
+
         <Button styleClass="secondary-button">View Reports</Button>
     </VBox>
 </AnchorPane>
