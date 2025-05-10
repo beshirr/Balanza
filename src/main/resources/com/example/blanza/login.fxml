@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.blanza.LoginController"
+            prefHeight="400.0" prefWidth="600.0">
+    <Label text="Login"/>
+    <Label text="Email: " AnchorPane.topAnchor="100" AnchorPane.leftAnchor="20"/>
+    <TextField fx:id="emailField" promptText="enter your email"
+               AnchorPane.topAnchor="100" AnchorPane.leftAnchor="120"/>
+    <Label text="password: " AnchorPane.topAnchor="140" AnchorPane.leftAnchor="20"/>
+    <PasswordField fx:id="passwordField" promptText="enter your password"
+               AnchorPane.topAnchor="140" AnchorPane.leftAnchor="120"/>
+    <Button text="Login" fx:id="login"
+            AnchorPane.topAnchor="350" AnchorPane.leftAnchor="300"/>
+</AnchorPane>

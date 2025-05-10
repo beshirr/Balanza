@@ -2,16 +2,19 @@ package com.example.blanza;
 
 public class UserManager {
     public static boolean signupProcess(String username, String email, String phoneNumber, String password, String confirmPassword) {
-        // TO DO
-        return false;
+        if (!signupValidation(username, email, phoneNumber, password, confirmPassword)){
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     public static boolean loginProcess(String email, String password){
-        // TO DO
-        return false;
+        return loginValidation(email, password);
     }
 
-    private boolean signupValidation(String username, String email, String phoneNumber, String password, String confirmPassword){
+    private static boolean signupValidation(String username, String email, String phoneNumber, String password, String confirmPassword){
         if (username == null || email == null || phoneNumber == null || password == null || confirmPassword == null){
             return false;
         }
@@ -33,7 +36,7 @@ public class UserManager {
         return true;
     }
 
-    private boolean loginValidation(String email, String password){
+    private static boolean loginValidation(String email, String password){
         if (email == null || password == null){
             return false;
         }
@@ -49,11 +52,11 @@ public class UserManager {
         return true;
     }
 
-    private void CreateUser(String username, String email, String phoneNumber, String password) {
+    private static void createUser(String username, String email, String phoneNumber, String password) {
         UserDB.insertUserDB(username, email, phoneNumber, password);
     }
 
-    private void DeleteUser(String username) {
+    private static void deleteUser(String username) {
         UserDB.removeUserDB(username);
     }
 
