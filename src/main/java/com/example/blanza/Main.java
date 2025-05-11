@@ -5,25 +5,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-//        int userId = SessionManager.loadSession();
-//        if (userId != -1) {
-//            Session.setCurrentUserId(userId);
-//            // Load the main page
-//        } else {
-//            // Load the index page so user either login or sign up
-//        }
-        SceneController.setStage(stage);
+        DatabaseInitializer.initialize();
+        Parent root;
+        int userId = SessionManager.loadSession();
+        if (userId != -1) {
+            Session.setCurrentUserId(userId);
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("home.fxml")));
+        } else {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
+        }
+//        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("track_expenses.fxml")));
 
-        //مؤقتا كل واحد يحط اسم الفايل اللي شغال عليه
-        // محدش يرفع الفايل دا على جت لحد ما نخلص الفايللت كلها و نربطهم
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Income.fxml")));
+        SceneController.setStage(stage);
         stage.setTitle("BALANZA");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();

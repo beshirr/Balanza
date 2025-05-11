@@ -61,10 +61,11 @@
             <version>3.0.0</version>
         </dependency>
 
+        <!-- Add this dependency to your pom.xml file -->
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.45.2.0</version>
+            <version>3.43.0.0</version>
         </dependency>
 
     </dependencies>

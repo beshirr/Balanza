@@ -11,23 +11,19 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class LoginController {
+    public Button login;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
 
     @FXML
-    private void handleLogin(ActionEvent event) {
+    private void handleLogin(javafx.event.ActionEvent actionEvent) throws IOException {
         String email = emailField.getText();
         String password = passwordField.getText();
         if (UserManager.loginProcess(email, password)) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
-                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            SceneController.switchScene("Budgeting.fxml", "Budgeting");
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

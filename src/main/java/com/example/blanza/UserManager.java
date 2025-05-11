@@ -10,12 +10,17 @@ public class UserManager {
             AuthenticationService.sendOTP(email, otp);
             createUser(username, email, phoneNumber, password);
             UserDB.setOTP(email, otp);
+            SessionManager.saveSession(UserDB.getUserInfoByUsername(username).getId());
             return true;
         }
     }
 
     public static boolean loginProcess(String email, String password){
-        return loginValidation(email, password);
+        if (loginValidation(email, password)) {
+            SessionManager.saveSession(UserDB.getUserInfoByEmail(email).getId());
+            return true;
+        }
+        return false;
     }
 
     private static boolean signupValidation(String username, String email, String phoneNumber, String password, String confirmPassword){
@@ -44,11 +49,11 @@ public class UserManager {
         if (email == null || password == null){
             return false;
         }
-        else if (UserDB.getUserInfoByUsername(email) == null){
+        else if (UserDB.getUserInfoByEmail(email) == null){
             return false;
         }
-        else if (UserDB.getUserInfoByUsername(email) != null){
-            UserInfo userInfo = UserDB.getUserInfoByUsername(email);
+        else if (UserDB.getUserInfoByEmail(email) != null){
+            UserInfo userInfo = UserDB.getUserInfoByEmail(email);
             if (!userInfo.getPassword().equals(password)){
                 return false;
             }

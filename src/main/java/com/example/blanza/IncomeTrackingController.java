@@ -1,10 +1,12 @@
 package com.example.blanza;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class IncomeTrackingController {
@@ -48,5 +50,9 @@ public class IncomeTrackingController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid amount entered.");
             alert.show();
         }
+    }
+
+    public void handleBack(ActionEvent actionEvent) throws IOException {
+        SceneController.switchScene("home.fxml", "Balanza");
     }
 }

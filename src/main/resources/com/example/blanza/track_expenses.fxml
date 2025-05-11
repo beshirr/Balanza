@@ -32,5 +32,7 @@
         <ListView fx:id="expenseListView"/>
 
         <Button styleClass="secondary-button">View Reports</Button>
+        <Button text="Back to Home" fx:id="backButton"
+                AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="100.0" onAction="#handleBack"/>
     </VBox>
 </AnchorPane>

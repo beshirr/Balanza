@@ -1,36 +1,16 @@
 package com.example.blanza;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class TrackExpenses {
-
-    @FXML
-    private Label balance;
-
-    @FXML
-    private Label income;
-
-    @FXML
-    private Label expenses;
-
-    @FXML
-    private TextField categoryField;
-
-    @FXML
-    private TextField amountField;
-
-    @FXML
-    private TextField paymentMethodField;
-
-    @FXML
-    private ListView<String> expenseListView;
-
     private ExpenseManager expenseManager;
 
     @FXML
@@ -70,6 +50,10 @@ public class TrackExpenses {
         }
     }
 
+    public void handleBack(ActionEvent actionEvent) throws IOException {
+        SceneController.switchScene("home.fxml", "Balanza");
+    }
+
     private void updateDashboard() {
         balance.setText("Balance: " + (expenseManager.getTotalExpenses())); // Placeholder logic
         income.setText("Income: " + "1000.0"); // Placeholder logic
@@ -82,4 +66,18 @@ public class TrackExpenses {
             expenseListView.getItems().add(expense.getCategory() + " - " + expense.getAmount() + " - " + expense.getDate());
         }
     }
+    @FXML
+    private Label balance;
+    @FXML
+    private Label income;
+    @FXML
+    private Label expenses;
+    @FXML
+    private TextField categoryField;
+    @FXML
+    private TextField amountField;
+    @FXML
+    private TextField paymentMethodField;
+    @FXML
+    private ListView<String> expenseListView;
 }
