@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.blanza.ReminderController"
+            prefHeight="600.0" prefWidth="800.0">
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="Reminders" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Separator/>
+        </VBox>
+    </top>
+    
+    <center>
+        <SplitPane dividerPositions="0.6" orientation="VERTICAL">
+            <VBox spacing="10">
+                <padding>
+                    <Insets top="10" right="20" bottom="10" left="20"/>
+                </padding>
+                <HBox spacing="10">
+                    <Label text="Create New Reminder" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                </HBox>
+                <GridPane vgap="10" hgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100" prefWidth="150"/>
+                        <ColumnConstraints prefWidth="400" hgrow="ALWAYS"/>
+                    </columnConstraints>
+                    
+                    <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="reminderTitleField" promptText="Enter reminder title (3-50 characters)" 
+                              GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextArea fx:id="reminderDescriptionArea" promptText="Enter description (optional)"
+                             GridPane.rowIndex="1" GridPane.columnIndex="1" prefHeight="60"/>
+                    
+                    <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="reminderDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Time:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="reminderTimeField" promptText="HH:MM (24-hour format)"
+                              GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Financial Task:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="financialTaskComboBox" promptText="Select associated task (optional)"
+                             GridPane.rowIndex="4" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                    
+                    <HBox spacing="10" alignment="CENTER_RIGHT" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                        <Button fx:id="saveButton" text="Save Reminder" onAction="#handleSaveButton"
+                               style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                    </HBox>
+                </GridPane>
+            </VBox>
+            
+            <VBox spacing="10">
+                <padding>
+                    <Insets top="10" right="20" bottom="20" left="20"/>
+                </padding>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Your Reminders" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="deleteButton" text="Delete Selected" onAction="#handleDeleteButton"
+                           style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+                </HBox>
+                <TableView fx:id="remindersTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="titleColumn" text="Title" prefWidth="300"/>
+                        <TableColumn fx:id="timeColumn" text="Date &amp; Time" prefWidth="200"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>

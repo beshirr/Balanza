@@ -6,5 +6,7 @@ public class DatabaseInitializer {
         ExpenseDB.createTable("create_expenses_table");
         BudgetDB.createTable("create_budget_table");
         IncomeDB.createTable("create_income_table");
+        ReminderDB.createTable("create_reminder_table");
+        FinancialTaskDB.createTable("create_financial_task_table");
     }
 }

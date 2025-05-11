@@ -16,4 +16,7 @@ public class Home {
     public void handleIncomeBtn(ActionEvent actionEvent) throws IOException {
         SceneController.switchScene("income.fxml", "Income");
     }
+    public void handleRemindersBtn(ActionEvent actionEvent) throws IOException {
+        SceneController.switchScene("reminders.fxml", "Reminders");
+    }
 }

@@ -15,5 +15,6 @@
         <Button onAction="#handleExpensesBtn">Expenses</Button>
         <Button onAction="#handleBudgetBtn">Budget</Button>
         <Button onAction="#handleIncomeBtn">Income</Button>
+        <Button onAction="#handleRemindersBtn">Reminders</Button>
     </HBox>
 </AnchorPane>
