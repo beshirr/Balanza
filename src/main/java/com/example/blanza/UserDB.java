@@ -14,7 +14,7 @@ public class UserDB {
                         + " username TEXT NOT NULL UNIQUE,\n"
                         + " email TEXT NOT NULL UNIQUE,\n"
                         + " phoneNumber TEXT NOT NULL UNIQUE,\n"
-                        + " password TEXT NOT NULL\n"
+                        + " password TEXT NOT NULL,\n" // Added missing comma here
                         + " otp TEXT\n"
                         + ");";
 

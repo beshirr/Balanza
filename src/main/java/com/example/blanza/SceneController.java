@@ -19,6 +19,5 @@ public class SceneController {
         primaryStage.setTitle(title);
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
-        primaryStage.setFullScreen(true);
     }
 }

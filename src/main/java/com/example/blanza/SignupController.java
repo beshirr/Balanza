@@ -2,17 +2,14 @@ package com.example.blanza;
 
 import javafx.fxml.FXML;
 
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
+import java.io.IOException;
+
 public class SignupController {
+    public Button signup;
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
     @FXML private TextField phoneNumberField;
@@ -21,20 +18,14 @@ public class SignupController {
 
 
     @FXML
-    private void handleSignup(ActionEvent event) {
+    private void handleSignup(ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String email = emailField.getText();
         String phoneNumber = phoneNumberField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         if (UserManager.signupProcess(username, email, phoneNumber, password, confirmPassword)) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("Authentication.fxml"));
-                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            SceneController.switchScene("authentication.fxml", "Authentication");
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

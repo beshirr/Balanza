@@ -17,6 +17,6 @@
     <Label text="password: " AnchorPane.topAnchor="140" AnchorPane.leftAnchor="20"/>
     <PasswordField fx:id="passwordField" promptText="enter your password"
                AnchorPane.topAnchor="140" AnchorPane.leftAnchor="120"/>
-    <Button text="Login" fx:id="login"
+    <Button text="Login" fx:id="login" onAction="#handleLogin"
             AnchorPane.topAnchor="350" AnchorPane.leftAnchor="300"/>
 </AnchorPane>
