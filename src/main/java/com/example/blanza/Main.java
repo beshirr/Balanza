@@ -14,14 +14,14 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         DatabaseInitializer.initializeDatabase();
         Parent root;
-//        int userId = SessionManager.loadSession();
-//        if (userId != -1) {
-//            Session.setCurrentUserId(userId);
-//            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("income.fxml")));
-//        } else {
-//            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
-//        }
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("track_expenses.fxml")));
+        int userId = SessionManager.loadSession();
+        if (userId != -1) {
+            Session.setCurrentUserId(userId);
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("income.fxml")));
+        } else {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
+        }
+//        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("track_expenses.fxml")));
 
         SceneController.setStage(stage);
         stage.setTitle("BALANZA");
