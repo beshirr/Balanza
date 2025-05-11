@@ -1,8 +1,6 @@
 package com.example.blanza;
 
-import javax.mail.Authenticator;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
+import javax.mail.*;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -11,7 +9,7 @@ import java.util.Properties;
 public class AuthenticationService {
     public static Void sendOTP(String email, String OTP){
         String senderEmail = "blanzaauth@gmail.com";
-        String senderPassword = "BalanzaSoftware";
+        String senderPassword = "euzavaleirdudutp";
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
@@ -28,6 +26,7 @@ public class AuthenticationService {
             mail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
             mail.setSubject("Your Balanza verification code");
             mail.setText("Hello " + email + " this is your verification code: " + OTP);
+            Transport.send(mail);
         } catch (MessagingException e){
             e.printStackTrace();
         }
