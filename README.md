@@ -17,5 +17,11 @@ A Java application for managing financial information using SQLite database
 ## Authors
 
 - Zeyad Mohamed Arafat
-- Youssef Ahmed Beshir
+- Youssef Ahmed Beshir 
 - Moaaz Mohamed Soliman
+
+## Contact Information
+
+- Zeyad -> zeyadarafat833@gmail.com
+- Youssef -> youssefahmedbehsir@gmail.com
+- Moaaz -> moaazmohamedsoliman1@gmail.com
