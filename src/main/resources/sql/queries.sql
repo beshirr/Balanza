@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL UNIQUE,
     phoneNumber TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    otp TEXT"
+    otp TEXT
 );
 
 -- @insert_user
