@@ -9,28 +9,6 @@ import javafx.scene.control.TextField;
 import java.time.LocalDate;
 
 public class TrackExpenses {
-
-    @FXML
-    private Label balance;
-
-    @FXML
-    private Label income;
-
-    @FXML
-    private Label expenses;
-
-    @FXML
-    private TextField categoryField;
-
-    @FXML
-    private TextField amountField;
-
-    @FXML
-    private TextField paymentMethodField;
-
-    @FXML
-    private ListView<String> expenseListView;
-
     private ExpenseManager expenseManager;
 
     @FXML
@@ -82,4 +60,18 @@ public class TrackExpenses {
             expenseListView.getItems().add(expense.getCategory() + " - " + expense.getAmount() + " - " + expense.getDate());
         }
     }
+    @FXML
+    private Label balance;
+    @FXML
+    private Label income;
+    @FXML
+    private Label expenses;
+    @FXML
+    private TextField categoryField;
+    @FXML
+    private TextField amountField;
+    @FXML
+    private TextField paymentMethodField;
+    @FXML
+    private ListView<String> expenseListView;
 }

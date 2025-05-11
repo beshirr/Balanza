@@ -1,40 +1,55 @@
 package com.example.blanza;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SQLLoader {
-    private static final String SQL_FILE_PATH = "../sql/expense_queries.sqlite";
-    private static final HashMap<String, String> queries = new HashMap<>();
-
+    private static final Map<String, String> sqlQueries = new HashMap<>();
+    private static final Pattern QUERY_PATTERN = Pattern.compile("--\\s*@(\\w+)\\s*([\\s\\S]*?)(?=--\\s*@|$)");
+    
     static {
-        try (BufferedReader reader = new BufferedReader(new FileReader(SQL_FILE_PATH))) {
+        try {
+            InputStream inputStream = SQLLoader.class.getResourceAsStream("/sql/queries.sqlite");
+            
+            if (inputStream == null) {
+                String errorMsg = "Error: Could not find SQL file in resources at /sql/queries.sqlite";
+                System.err.println(errorMsg);
+                throw new RuntimeException(errorMsg); // Make the error explicit and prevent partial initialization
+            }
+            
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder fileContent = new StringBuilder();
             String line;
-            String key = null;
-            StringBuilder value = new StringBuilder();
-
+            
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("-- @")) {
-                    if (key != null && value.length() > 0) {
-                        queries.put(key, value.toString().trim());
-                        value.setLength(0);
-                    }
-                    key = line.substring(4).trim();
-                } else if (!line.trim().startsWith("--")) {
-                    value.append(line).append("\n");
-                }
+                fileContent.append(line).append("\n");
             }
-            if (key != null && value.length() > 0) {
-                queries.put(key, value.toString().trim());
+            
+            Matcher matcher = QUERY_PATTERN.matcher(fileContent.toString());
+            while (matcher.find()) {
+                String queryName = matcher.group(1);
+                String queryContent = matcher.group(2).trim();
+                sqlQueries.put(queryName, queryContent);
             }
+            
+            reader.close();
         } catch (IOException e) {
+            System.err.println("Error reading SQL queries: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
+    
     public static String get(String queryName) {
-        return queries.get(queryName);
+        String query = sqlQueries.get(queryName);
+        if (query == null) {
+            System.err.println("No SQL query found with name: " + queryName);
+        }
+        return query;
     }
 }
