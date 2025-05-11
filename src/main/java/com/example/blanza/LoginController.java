@@ -29,7 +29,7 @@ public class LoginController {
         String email = emailField.getText();
         String password = passwordField.getText();
         if (UserManager.loginProcess(email, password)) {
-            SceneController.switchScene("Budgeting.fxml", "Budgeting");
+            SceneController.switchScene("home.fxml", "Balanza");
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

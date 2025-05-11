@@ -26,14 +26,14 @@ public class BudgetingTrackingController {
     // Initialize the Budgeting model
     public void initialize() {
         int userId = Session.getCurrentUserId();
-        budget = new Budgeting("", 0.0, 0.0, userId); // Link to current user
+        budget = new Budgeting("", 0.0, 0.0, userId);
     }
 
 
     @FXML
     public void handleSaveBudget() {
-        String category = categoryField.getText(); // Get the category from the input field
-        String budgetAmountText = budgetAmountField.getText(); // Get the budget amount from the input field
+        String category = categoryField.getText();
+        String budgetAmountText = budgetAmountField.getText();
 
         try {
 
@@ -41,6 +41,8 @@ public class BudgetingTrackingController {
             budget.setCategory(category);
             budget.setBudgetAmount(budgetAmount);
             budget.updateRemainingBudget();
+
+            BudgetDB.insertBudget(budget);
 
 
             remainingBudgetLabel.setText("Remaining Budget: " + budget.getRemaining_budget());
