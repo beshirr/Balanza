@@ -18,20 +18,10 @@
             <Label styleClass="" fx:id="income">Income</Label>
             <Label styleClass="" fx:id="expenses">Expenses</Label>
         </HBox>
-        <Button styleClass="primary-button">+ Add Expense</Button>
-        <ListView styleClass="list-container">
-            <!-- hard coded values for now-->
-            <HBox styleClass="list-element">
-                <Label styleClass="">description</Label>
-                <Label styleClass="">amount</Label>
-                <Label styleClass="">category</Label>
-                <Label styleClass="">payment method</Label>
-                <Label styleClass="">date</Label>
-            </HBox>
-        </ListView>
+        <Button styleClass="primary-button" onAction="#handleAddExpense">+ Add Expense</Button>
         <ListView fx:id="expenseListView"/>
 
-        <Button styleClass="secondary-button">View Reports</Button>
+        <Button styleClass="secondary-button" onAction="#handleViewReports">View Reports</Button>
         <Button text="Back to Home" fx:id="backButton"
                 AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="100.0" onAction="#handleBack"/>
     </VBox>

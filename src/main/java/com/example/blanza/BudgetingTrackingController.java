@@ -25,7 +25,8 @@ public class BudgetingTrackingController {
 
     // Initialize the Budgeting model
     public void initialize() {
-        budget = new Budgeting("", 0.0, 0.0, 0); // Initialize with default values
+        int userId = Session.getCurrentUserId();
+        budget = new Budgeting("", 0.0, 0.0, userId); // Link to current user
     }
 
 

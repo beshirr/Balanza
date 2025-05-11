@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseManager {
-    private List<Expense> expenses = new ArrayList<>();
+    private final List<Expense> expenses;
     private final ExpenseDB db = new ExpenseDB();
 
     public ExpenseManager() {
