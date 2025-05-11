@@ -55,8 +55,6 @@ public class TrackExpenses {
     }
 
     private void updateDashboard() {
-        balance.setText("Balance: " + (expenseManager.getTotalExpenses())); // Placeholder logic
-        income.setText("Income: " + "1000.0"); // Placeholder logic
         expenses.setText("Expenses: " + expenseManager.getTotalExpenses());
     }
 

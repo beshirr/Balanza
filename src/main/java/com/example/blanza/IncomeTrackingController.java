@@ -24,7 +24,9 @@ public class IncomeTrackingController {
 
 
     public void initialize() {
-        income = new Income("", 0.0, LocalDate.now()); // Create a new Income object with default values
+        int userId = Session.getCurrentUserId();
+        income = new Income("", 0.0, LocalDate.now());
+        income.setUser_id(userId); // Link to current user
     }
 
 

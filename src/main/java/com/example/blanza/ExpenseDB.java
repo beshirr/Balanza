@@ -23,24 +23,17 @@ public class ExpenseDB extends Database {
 
     public static List<Expense> getAllExpenses() {
         List<Expense> expenses = new ArrayList<>();
-        String sql = SQLLoader.get("select_all_expenses");
-        
-        if (sql == null || sql.isEmpty()) {
-            System.err.println("Error: select_all_expenses SQL query not found");
-            return expenses;
-        }
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-        
         int userId = Session.getCurrentUserId();
         if (userId <= 0) {
             System.err.println("Error: Invalid user ID");
             return expenses;
         }
-        
-        stmt.setInt(1, userId); 
-        ResultSet rs = stmt.executeQuery();
+
+        String sql = SQLLoader.get("select_all_expenses");
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -51,7 +44,6 @@ public class ExpenseDB extends Database {
 
                 expenses.add(new Expense(id, category, amount, date, method));
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
