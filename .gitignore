@@ -19,3 +19,5 @@ target/
 *.log
 
 session.txt
+*.sqlite
+*.db

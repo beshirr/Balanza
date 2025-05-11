@@ -15,10 +15,10 @@ public class SQLLoader {
     
     static {
         try {
-            InputStream inputStream = SQLLoader.class.getResourceAsStream("/sql/queries.sqlite");
+            InputStream inputStream = SQLLoader.class.getResourceAsStream("/sql/queries.sql");
             
             if (inputStream == null) {
-                String errorMsg = "Error: Could not find SQL file in resources at /sql/queries.sqlite";
+                String errorMsg = "Error: Could not find SQL file in resources at /sql/queries.sql";
                 System.err.println(errorMsg);
                 throw new RuntimeException(errorMsg); // Make the error explicit and prevent partial initialization
             }
