@@ -17,3 +17,5 @@ target/
 
 # Logs
 *.log
+
+session.txt
