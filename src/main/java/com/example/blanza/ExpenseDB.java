@@ -1,28 +1,11 @@
 package com.example.blanza;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpenseDB {
-    private final static Dotenv dotenv = Dotenv.configure().directory(".").load();
-    private final static String DB_URL = dotenv.get("DB_URL");
-
-    public static void createExpenseTable() {
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                String sql = SQLLoader.get("create_expenses_table");
-
-                Statement stmt = conn.createStatement();
-                stmt.execute(sql);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
+public class ExpenseDB extends Database {
     public static void insertExpense(Expense e) {
         String sql = SQLLoader.get("insert_expense");
         try (Connection conn = DriverManager.getConnection(DB_URL);

@@ -1,26 +1,8 @@
 package com.example.blanza;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 import java.sql.*;
 
-public class UserDB {
-    private final static Dotenv dotenv = Dotenv.configure().directory(".").load();
-    private final static String DB_URL = dotenv.get("DB_URL");
-
-    public static void createUserDB() {
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                String sql = SQLLoader.get("create_user_table");
-
-                Statement stmt = conn.createStatement();
-                stmt.execute(sql);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
+public class UserDB extends Database {
     public static void insertUserDB(String username, String email, String phoneNumber, String password) {
         try (Connection conn = DriverManager.getConnection(DB_URL)){
             if (conn != null) {
@@ -113,5 +95,4 @@ public class UserDB {
             System.out.println(e.getMessage());
         }
     }
-
 }
