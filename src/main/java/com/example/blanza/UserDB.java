@@ -2,7 +2,18 @@ package com.example.blanza;
 
 import java.sql.*;
 
+/**
+ * The type User db.
+ */
 public class UserDB extends Database {
+    /**
+     * Insert user db.
+     *
+     * @param username    the username
+     * @param email       the email
+     * @param phoneNumber the phone number
+     * @param password    the password
+     */
     public static void insertUserDB(String username, String email, String phoneNumber, String password) {
         try (Connection conn = DriverManager.getConnection(DB_URL)){
             if (conn != null) {
@@ -20,6 +31,11 @@ public class UserDB extends Database {
         }
     }
 
+    /**
+     * Remove user db.
+     *
+     * @param email the email
+     */
     public static void removeUserDB(String email) {
         try (Connection conn = DriverManager.getConnection(DB_URL)){
             if (conn != null) {
@@ -34,6 +50,12 @@ public class UserDB extends Database {
     }
 
 
+    /**
+     * Gets user info by username.
+     *
+     * @param username the username
+     * @return the user info by username
+     */
     public static UserInfo getUserInfoByUsername(String username) {
         try (Connection conn = DriverManager.getConnection(DB_URL)){
             if (conn != null) {
@@ -58,6 +80,12 @@ public class UserDB extends Database {
         return null;
     }
 
+    /**
+     * Gets user info by email.
+     *
+     * @param email the email
+     * @return the user info by email
+     */
     public static UserInfo getUserInfoByEmail(String email) {
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             String sql = SQLLoader.get("get_user_info_by_email");
@@ -82,6 +110,12 @@ public class UserDB extends Database {
         return null;
     }
 
+    /**
+     * Sets otp.
+     *
+     * @param email the email
+     * @param otp   the otp
+     */
     public static void setOTP(String email, String otp) {
         try (Connection conn = DriverManager.getConnection(DB_URL)){
             String sql = SQLLoader.get("set_otp");

@@ -6,7 +6,17 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+/**
+ * The type Authentication service.
+ */
 public class AuthenticationService {
+    /**
+     * Send otp void.
+     *
+     * @param email the email
+     * @param OTP   the otp
+     * @return the void
+     */
     public static Void sendOTP(String email, String OTP){
         String senderEmail = "blanzaauth@gmail.com";
         String senderPassword = "euzavaleirdudutp";
@@ -33,6 +43,13 @@ public class AuthenticationService {
         return null;
     }
 
+    /**
+     * Verify otp boolean.
+     *
+     * @param email the email
+     * @param OTP   the otp
+     * @return the boolean
+     */
     public static boolean verifyOTP(String email, String OTP){
         UserInfo userInfo = UserDB.getUserInfoByEmail(email);
         String requestedOTP = userInfo.getOtp();

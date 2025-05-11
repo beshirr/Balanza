@@ -6,6 +6,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import java.io.IOException;
 
+/**
+ * The type Authentication controller.
+ */
 public class AuthenticationController {
     @FXML private TextField emailField;
     @FXML private TextField OTPField;

@@ -13,7 +13,13 @@ import javafx.stage.Stage;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
+/**
+ * The type Login controller.
+ */
 public class LoginController {
+    /**
+     * The Login.
+     */
     public Button login;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
