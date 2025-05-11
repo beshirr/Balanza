@@ -29,7 +29,7 @@ public class SignupController {
         String confirmPassword = confirmPasswordField.getText();
         if (UserManager.signupProcess(username, email, phoneNumber, password, confirmPassword)) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("Authentication.fxml"));
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(root));
             } catch (Exception e) {

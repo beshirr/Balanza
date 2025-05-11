@@ -6,6 +6,10 @@ public class UserManager {
             return false;
         }
         else {
+            String otp = OTPGenerator.generateOTP();
+            AuthenticationService.sendOTP(email, otp);
+            createUser(username, email, phoneNumber, password);
+            UserDB.setOTP(email, otp);
             return true;
         }
     }
@@ -48,6 +52,9 @@ public class UserManager {
             if (!userInfo.getPassword().equals(password)){
                 return false;
             }
+            else if (userInfo.getOtp() == null){
+                return false;
+            }
         }
         return true;
     }
@@ -56,8 +63,8 @@ public class UserManager {
         UserDB.insertUserDB(username, email, phoneNumber, password);
     }
 
-    private static void deleteUser(String username) {
-        UserDB.removeUserDB(username);
+    private static void deleteUser(String email) {
+        UserDB.removeUserDB(email);
     }
 
 

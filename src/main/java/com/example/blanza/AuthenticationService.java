@@ -34,7 +34,9 @@ public class AuthenticationService {
         return null;
     }
 
-    public static boolean verifyOTP(String userOTP, String OTP){
-        return OTP.equals(userOTP);
+    public static boolean verifyOTP(String email, String OTP){
+        UserInfo userInfo = UserDB.getUserInfoByEmail(email);
+        String requestedOTP = userInfo.getOtp();
+        return requestedOTP.equals(OTP);
     }
 }

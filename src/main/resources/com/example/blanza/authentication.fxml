@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.blanza.AuthenticationController"
+            prefHeight="400.0" prefWidth="600.0">
+    <Label text="Authentication"/>
+    <Label text="Email" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="20"/>
+    <TextField fx:id="emailField" promptText="enter your email"
+               AnchorPane.topAnchor="100" AnchorPane.leftAnchor="120"/>
+    <Label text="OTP" AnchorPane.topAnchor="140" AnchorPane.leftAnchor="20"/>
+    <TextField fx:id="OTPField" promptText="enter the code you received on your email"
+               AnchorPane.topAnchor="140" AnchorPane.leftAnchor="120"/>
+    <Button fx:id="verify" text="Verify" onAction="#handleVerify"
+            AnchorPane.topAnchor="350" AnchorPane.leftAnchor="300"/>
+</AnchorPane>
