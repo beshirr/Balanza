@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL UNIQUE,
     phoneNumber TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    otp TEXT
+    otp TEXT,
+    verified BOOLEAN DEFAULT 0
 );
 
 -- @insert_user
@@ -24,10 +25,21 @@ SELECT * FROM users WHERE email = ?;
 -- @get_user_email_by_id
 SELECT email FROM users WHERE id=?;
 
+-- @get_user_otp_by_id
+SELECT otp FROM users WHERE id=?;
+
+-- @get_user_verified_by_id
+SELECT verified FROM users WHERE id=?;
+
 -- @set_otp
 UPDATE users
 SET otp=?
 WHERE email=?;
+
+-- @set_verified
+UPDATE users
+SET verified=true
+WHERE id=?;
 
 -- @create_expenses_table
 CREATE TABLE IF NOT EXISTS expenses (
