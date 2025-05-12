@@ -70,7 +70,8 @@ public class UserDB extends Database {
                             userRecord.getString("email"),
                             userRecord.getString("phoneNumber"),
                             userRecord.getString("password"),
-                            userRecord.getString("otp")
+                            userRecord.getString("otp"),
+                            userRecord.getBoolean("verified")
                     );
                 }
             }
@@ -100,7 +101,8 @@ public class UserDB extends Database {
                             userRecord.getString("email"),
                             userRecord.getString("phoneNumber"),
                             userRecord.getString("password"),
-                            userRecord.getString("otp")
+                            userRecord.getString("otp"),
+                            userRecord.getBoolean("verified")
                     );
                 }
             }
@@ -151,5 +153,52 @@ public class UserDB extends Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void setVerified(int id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL)){
+            String sql = SQLLoader.get("set_verified");
+            if (conn != null) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static String getUserOTPByID(int id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL)){
+            String sql = SQLLoader.get("get_user_otp_by_id");
+            if (conn != null) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, id);
+                ResultSet user = stmt.executeQuery();
+                if (user.next()) {
+                    return user.getString("otp");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public static boolean getUserVerified(int id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL)){
+            String sql = SQLLoader.get("get_user_verified_by_id");
+            if (conn != null) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, id);
+                ResultSet user = stmt.executeQuery();
+                if (user.next()){
+                    return user.getBoolean("verified");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 }

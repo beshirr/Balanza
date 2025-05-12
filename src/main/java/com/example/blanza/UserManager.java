@@ -11,7 +11,7 @@ public class UserManager {
      * @param email           the email
      * @param phoneNumber     the phone number
      * @param password        the password
-     * @param confirmPassword the confirm password
+     * @param confirmPassword the confirmation password
      * @return the boolean
      */
     public static boolean signupProcess(String username, String email, String phoneNumber, String password, String confirmPassword) {
@@ -20,7 +20,7 @@ public class UserManager {
         }
         else {
             String otp = OTPGenerator.generateOTP();
-            AuthenticationService.sendOTP(email, otp);
+            //AuthenticationService.sendOTP(email, otp);
             createUser(username, email, phoneNumber, password);
             UserDB.setOTP(email, otp);
             SessionManager.saveSession(UserDB.getUserInfoByUsername(username).getId());
@@ -95,6 +95,11 @@ public class UserManager {
                 return false;
             }
             else if (userInfo.getOtp() == null){
+                deleteUser(email);
+                return false;
+            }
+            else if (!userInfo.isVerified()){
+                deleteUser(email);
                 return false;
             }
         }

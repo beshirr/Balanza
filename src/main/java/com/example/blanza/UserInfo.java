@@ -11,7 +11,7 @@ public class UserInfo {
     String phoneNumber;
     String password;
     String otp;
-
+    boolean verified;
     /**
      * Instantiates a new User info.
      *
@@ -22,13 +22,14 @@ public class UserInfo {
      * @param password    the password
      * @param otp         the otp
      */
-    public UserInfo(int Id, String username, String email, String phoneNumber, String password, String otp) {
+    public UserInfo(int Id, String username, String email, String phoneNumber, String password, String otp, boolean verified) {
         this.Id = Id;
         this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.otp = otp;
+        this.verified = verified;
     }
 
     /**
@@ -82,4 +83,5 @@ public class UserInfo {
      * @return the otp
      */
     public String getOtp() { return otp; }
+    public boolean isVerified() { return verified; }
 }
