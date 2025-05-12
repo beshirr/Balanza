@@ -48,13 +48,11 @@ public class AuthenticationService {
     /**
      * Verify otp boolean.
      *
-     * @param email the email
      * @param OTP   the otp
      * @return the boolean
      */
-    public static boolean verifyOTP(String email, String OTP){
-        UserInfo userInfo = UserDB.getUserInfoByEmail(email);
-        String requestedOTP = userInfo.getOtp();
+    public static boolean verifyOTP(String OTP){
+        String requestedOTP = UserDB.getUserOTPByID(SessionManager.loadSession());
         return requestedOTP.equals(OTP);
     }
 }

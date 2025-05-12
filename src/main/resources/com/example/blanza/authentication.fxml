@@ -50,20 +50,7 @@
           AnchorPane.leftAnchor="150.0"
           AnchorPane.rightAnchor="150.0"
           styleClass="form-container">
-          
-        <!-- Email Field -->
-        <GridPane hgap="10" vgap="5" styleClass="form-row">
-            <columnConstraints>
-                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
-                <ColumnConstraints prefWidth="250" hgrow="ALWAYS"/>
-            </columnConstraints>
-            
-            <Label text="Email:" styleClass="form-label" 
-                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="emailField" promptText="Enter your email address"
-                      styleClass="form-field"
-                      GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        </GridPane>
+
         
         <!-- OTP Field -->
         <GridPane hgap="10" vgap="5" styleClass="form-row">

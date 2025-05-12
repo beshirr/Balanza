@@ -15,11 +15,10 @@ public class AuthenticationController {
 
     @FXML
     private void handleVerify(ActionEvent event) throws IOException {
-        String email = emailField.getText();
         String OTP = OTPField.getText();
-        UserInfo userInfo = UserDB.getUserInfoByEmail(email);
-        if (userInfo.getOtp().equals(OTP)) {
-            SceneController.switchScene("Budgeting.fxml", "Budgeting");
+        if (AuthenticationService.verifyOTP(OTP)) {
+            UserDB.setVerified(SessionManager.loadSession());
+            SceneController.switchScene("home.fxml", "Balanza");
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
