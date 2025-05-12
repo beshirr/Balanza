@@ -21,6 +21,9 @@ SELECT * FROM users WHERE username = ?;
 -- @get_user_info_by_email
 SELECT * FROM users WHERE email = ?;
 
+-- @get_user_email_by_id
+SELECT email FROM users WHERE id=?;
+
 -- @set_otp
 UPDATE users
 SET otp=?

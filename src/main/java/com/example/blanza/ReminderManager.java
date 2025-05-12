@@ -1,5 +1,7 @@
 package com.example.blanza;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -103,13 +105,14 @@ public class ReminderManager {
     /**
      * Sends a notification for a specific reminder
      */
-    private void sendNotification(Reminder reminder) {
-        // In a real application, this would connect to a notification system
-        // For now, we'll just print to console
-        System.out.println("NOTIFICATION: " + reminder.toString());
-        
-        // Here would be code to show a notification in the UI
-        // or send an email/SMS depending on user preferences
+private void sendNotification(Reminder reminder) {
+        // TODO: Send an actual email
+        String body = "NOTIFICATION: " + reminder.toString();
+        Dotenv dotenv = Dotenv.configure().directory(".").load();
+        String email = dotenv.get("EMAIL_SENDER");
+        String password = dotenv.get("PASS");
+        EmailManager emailManager = new EmailManager(email, password);
+        emailManager.sendEmail(UserDB.getUserEmailById(Session.getCurrentUserId()), "Balanza Reminder", body);
     }
 
     /**

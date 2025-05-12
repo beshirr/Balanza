@@ -111,6 +111,29 @@ public class UserDB extends Database {
     }
 
     /**
+     * Gets user email by id.
+     *
+     * @param id the user id
+     * @return the user email
+     */
+    public static String getUserEmailById(int id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            String sql = SQLLoader.get("get_user_email_by_id");
+            if (conn != null) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, id);
+                ResultSet userRecord = stmt.executeQuery();
+                if (userRecord.next()) {
+                    return userRecord.getString("email");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
      * Sets otp.
      *
      * @param email the email
