@@ -44,9 +44,6 @@ public class ReminderController implements Initializable {
     @FXML
     private Button saveButton;
     
-    @FXML
-    private Button deleteButton;
-    
     private ReminderManager reminderManager;
     private ObservableList<Reminder> remindersList = FXCollections.observableArrayList();
     private ObservableList<FinancialTask> financialTasksList = FXCollections.observableArrayList();
@@ -136,20 +133,6 @@ public class ReminderController implements Initializable {
         } else {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to save reminder. Please check your inputs.");
         }
-    }
-    
-    @FXML
-    private void handleDeleteButton(ActionEvent event) {
-        Reminder selectedReminder = remindersTable.getSelectionModel().getSelectedItem();
-        
-        if (selectedReminder == null) {
-            showAlert(Alert.AlertType.WARNING, "Selection Required", "Please select a reminder to delete.");
-            return;
-        }
-        
-        reminderManager.deleteReminder(selectedReminder.getId());
-        loadReminders();
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Reminder deleted successfully.");
     }
     
     private void clearFields() {

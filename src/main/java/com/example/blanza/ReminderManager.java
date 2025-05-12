@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class ReminderManager {
-    private PriorityQueue<Reminder> reminderQueue = new PriorityQueue<>();
-    private ReminderDB db = new ReminderDB();
+    private final PriorityQueue<Reminder> reminderQueue = new PriorityQueue<>();
     private Thread reminderThread;
     private boolean isRunning = false;
 
@@ -29,14 +28,10 @@ public class ReminderManager {
         }
         
         // Save to database first to get the generated ID
-        int reminderId = ReminderDB.insertReminder(reminder);
-        
-        if (reminderId == -1) {
-            return false; // Failed to save to database
-        }
+        ReminderDB.insertReminder(reminder);
         
         // Set the generated ID
-        reminder.setId(reminderId);
+        reminder.setId(reminder.getId());
         
         // Add to queue
         reminderQueue.add(reminder);
@@ -54,11 +49,7 @@ public class ReminderManager {
         }
         
         // Date must be in the future
-        if (reminder.getTime() == null || reminder.getTime().isBefore(LocalDateTime.now())) {
-            return false;
-        }
-        
-        return true;
+        return reminder.getTime() != null && !reminder.getTime().isBefore(LocalDateTime.now());
     }
     
     /**
@@ -70,15 +61,6 @@ public class ReminderManager {
         reminderQueue.addAll(reminders);
     }
 
-    /**
-     * Deletes a reminder by ID
-     */
-    public void deleteReminder(int id) {
-        reminderQueue.removeIf(reminder -> reminder.getId() == id);
-        // Delete from database
-        ReminderDB.deleteReminder(id);
-    }
-    
     /**
      * Gets all reminders for the current user
      */
@@ -104,9 +86,6 @@ public class ReminderManager {
                     
                     // Remove the reminder from the queue
                     reminderQueue.poll();
-                    
-                    // Delete from database or mark as completed if you want to keep history
-                    ReminderDB.deleteReminder(nextReminder.getId());
                 } else {
                     // Sleep until the next reminder is due, but check at least every minute
                     long sleepTime = Math.min(

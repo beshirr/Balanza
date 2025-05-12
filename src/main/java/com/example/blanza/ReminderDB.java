@@ -9,67 +9,32 @@ import java.util.List;
  * The type Reminder db.
  */
 public class ReminderDB extends Database {
-    
-    /**
-     * Creates reminder table if not exists.
-     */
-    public static void createReminderTable() {
-        createTable("create_reminder_table");
-    }
-    
     /**
      * Insert reminder into database.
      *
      * @param reminder the reminder to insert
-     * @return the id of the inserted reminder
      */
-    public static int insertReminder(Reminder reminder) {
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                String sql = SQLLoader.get("insert_reminder");
-                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                stmt.setInt(1, reminder.getCurrent_user_id());
-                stmt.setString(2, reminder.getTitle());
-                stmt.setString(3, reminder.getDescription());
-                stmt.setTimestamp(4, Timestamp.valueOf(reminder.getTime()));
-                
-                if (reminder.getTask_id() != null) {
-                    stmt.setInt(5, reminder.getTask_id());
-                } else {
-                    stmt.setNull(5, java.sql.Types.INTEGER);
-                }
-                
-                stmt.executeUpdate();
-                
-                ResultSet rs = stmt.getGeneratedKeys();
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+    public static void insertReminder(Reminder reminder) {
+        String sql = SQLLoader.get("insert_reminder");
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, reminder.getCurrent_user_id());
+            stmt.setString(2, reminder.getTitle());
+            stmt.setString(3, reminder.getDescription());
+            stmt.setTimestamp(4, Timestamp.valueOf(reminder.getTime()));
+            if (reminder.getTask_id() != null) {
+                stmt.setInt(5, reminder.getTask_id());
+            } else {
+                stmt.setNull(5, java.sql.Types.INTEGER);
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return -1;
-    }
-    
-    /**
-     * Delete reminder from database.
-     *
-     * @param id the reminder id
-     */
-    public static void deleteReminder(int id) {
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                String sql = SQLLoader.get("delete_reminder");
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setInt(1, id);
-                stmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            stmt.executeUpdate();
+
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
-    
+
     /**
      * Get all reminders for the current user.
      *
@@ -115,33 +80,5 @@ public class ReminderDB extends Database {
         }
         
         return reminders;
-    }
-    
-    /**
-     * Update reminder in database.
-     *
-     * @param reminder the reminder to update
-     */
-    public static void updateReminder(Reminder reminder) {
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                String sql = SQLLoader.get("update_reminder");
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, reminder.getTitle());
-                stmt.setString(2, reminder.getDescription());
-                stmt.setTimestamp(3, Timestamp.valueOf(reminder.getTime()));
-                
-                if (reminder.getTask_id() != null) {
-                    stmt.setInt(4, reminder.getTask_id());
-                } else {
-                    stmt.setNull(4, java.sql.Types.INTEGER);
-                }
-                
-                stmt.setInt(5, reminder.getId());
-                stmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
