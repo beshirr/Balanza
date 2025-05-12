@@ -2,10 +2,6 @@ package com.example.blanza;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-
-import java.util.Properties;
-
-
 /**
  * The type Authentication service.
  */
@@ -15,7 +11,6 @@ public class AuthenticationService {
      *
      * @param email the email
      * @param OTP   the otp
-     * @return the void
      */
     public static void sendOTP(String email, String OTP){
 //        String senderEmail = "blanzaauth@gmail.com";
