@@ -153,6 +153,22 @@
     -fx-background-color: -medium-gray;
 }
 
+.logout-button {
+    -fx-background-color: #d9534f; /* Bootstrap-like red */
+    -fx-text-fill: white;
+    -fx-border-color: #c9302c;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #c9302c;
+}
+
+
 .navigation-button {
     -fx-background-color: transparent;
     -fx-text-fill: -primary-color;

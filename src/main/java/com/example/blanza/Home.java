@@ -19,4 +19,9 @@ public class Home {
     public void handleRemindersBtn(ActionEvent actionEvent) throws IOException {
         SceneController.switchScene("reminders.fxml", "Reminders");
     }
+
+    public void handleLogoutBtn(ActionEvent actionEvent) throws IOException {
+        SessionManager.saveSession(-1);
+        SceneController.switchScene("index.fxml", "Index");
+    }
 }

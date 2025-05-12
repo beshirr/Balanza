@@ -89,6 +89,18 @@
                             </graphic>
                         </Button>
                     </HBox>
+
+                    <HBox spacing="15" alignment="CENTER">
+                        <Button onAction="#handleLogoutBtn"
+                                styleClass="logout-button"
+                                prefWidth="150" prefHeight="50">
+                            <graphic>
+                                <VBox alignment="CENTER">
+                                    <Label text="Logout" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                </VBox>
+                            </graphic>
+                        </Button>
+                    </HBox>
                 </VBox>
 
             </VBox>
