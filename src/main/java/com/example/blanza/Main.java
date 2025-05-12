@@ -14,7 +14,7 @@ public class Main extends Application {
         DatabaseInitializer.initialize();
         Parent root;
         int userId = SessionManager.loadSession();
-        if (userId != -1) {
+        if (userId != -1 && UserDB.getUserVerified(userId)) {
             Session.setCurrentUserId(userId);
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("home.fxml")));
         } else {
