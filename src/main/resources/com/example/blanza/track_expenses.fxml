@@ -1,29 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.blanza.TrackExpenses"
-            prefHeight="400.0" prefWidth="600.0"
+            prefHeight="600.0" prefWidth="800.0"
+            styleClass="page-background"
             stylesheets="@css/style.css">
 
-    <VBox>
-        <Label styleClass="title">Expense Tracker</Label>
-        <HBox styleClass="dashboard-container">
-            <Label styleClass="" fx:id="balance">Balance</Label>
-            <Label styleClass="" fx:id="income">Income</Label>
-            <Label styleClass="" fx:id="expenses">Expenses</Label>
-        </HBox>
-        <Button styleClass="primary-button" onAction="#handleAddExpense">+ Add Expense</Button>
-        <ListView fx:id="expenseListView"/>
-
-        <Button styleClass="secondary-button" onAction="#handleViewReports">View Reports</Button>
-        <Button text="Back to Home" fx:id="backButton"
-                AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="100.0" onAction="#handleBack"/>
-    </VBox>
+    <BorderPane AnchorPane.bottomAnchor="0.0" 
+                AnchorPane.leftAnchor="0.0" 
+                AnchorPane.rightAnchor="0.0" 
+                AnchorPane.topAnchor="0.0">
+                
+        <!-- Header Section -->
+        <top>
+            <VBox spacing="10" styleClass="header-container">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="10.0" left="20.0" />
+                </padding>
+                
+                <Label text="Expense Tracker" styleClass="page-title">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="Track and manage your daily expenses" styleClass="subtitle" />
+                <Separator styleClass="section-divider" />
+            </VBox>
+        </top>
+        
+        <!-- Main Content -->
+        <center>
+            <VBox spacing="20" styleClass="content-container">
+                <padding>
+                    <Insets top="10.0" right="20.0" bottom="10.0" left="20.0" />
+                </padding>
+                
+                <!-- Financial Summary Cards -->
+                <HBox spacing="20" alignment="CENTER" styleClass="summary-cards">
+                    
+                    <VBox styleClass="summary-card">
+                        <Label text="EXPENSES" styleClass="card-title" />
+                        <Label fx:id="expenses" text="0.00" styleClass="card-value" />
+                    </VBox>
+                </HBox>
+                
+                <!-- Add Expense Button -->
+                <HBox alignment="CENTER_RIGHT">
+                    <Button text="+ Add Expense" 
+                            onAction="#handleAddExpense" 
+                            styleClass="primary-button" />
+                </HBox>
+                
+                <!-- Expenses List -->
+                <ListView fx:id="expenseListView" 
+                         VBox.vgrow="ALWAYS" 
+                         styleClass="expense-list" />
+            </VBox>
+        </center>
+        
+        <!-- Footer with Actions -->
+        <bottom>
+            <HBox spacing="15" alignment="CENTER" styleClass="footer-container">
+                <padding>
+                    <Insets top="10.0" right="20.0" bottom="20.0" left="20.0" />
+                </padding>
+                
+                <Button text="View Reports" 
+                       onAction="#handleViewReports" 
+                       styleClass="secondary-button" />
+                       
+                <Button text="Back to Home" 
+                       fx:id="backButton" 
+                       onAction="#handleBack" 
+                       styleClass="navigation-button" />
+            </HBox>
+        </bottom>
+    </BorderPane>
 </AnchorPane>

@@ -12,74 +12,200 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.blanza.ExpenseReportsController">
-   <children>
-      <VBox spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <children>
-            <Label text="Expense Reports" styleClass="title">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
+<?import javafx.scene.control.Separator?>
+<AnchorPane prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.blanza.ExpenseReportsController"
+            styleClass="page-background"
+            stylesheets="@css/style.css">
+   <BorderPane AnchorPane.bottomAnchor="0.0" 
+               AnchorPane.leftAnchor="0.0" 
+               AnchorPane.rightAnchor="0.0" 
+               AnchorPane.topAnchor="0.0">
+   
+      <!-- Header Section -->
+      <top>
+         <VBox spacing="10.0" styleClass="header-container">
+            <padding>
+               <Insets top="20.0" right="20.0" bottom="10.0" left="20.0" />
+            </padding>
+            <Label text="Expense Analytics" styleClass="page-title"/>
+            <Label text="Visualize and understand your spending patterns" styleClass="subtitle"/>
+            <Separator/>
             
-            <HBox spacing="10.0" alignment="CENTER_LEFT">
-               <children>
-                  <Label text="Time Period:" />
-                  <ComboBox fx:id="periodComboBox" prefWidth="150.0" />
-                  <Button onAction="#handleRefresh" text="Refresh" />
-               </children>
+            <HBox spacing="15.0" alignment="CENTER_LEFT" styleClass="filter-container">
+               <Label text="Time Period:" styleClass="filter-label"/>
+               <ComboBox fx:id="periodComboBox" prefWidth="150.0" styleClass="filter-dropdown"/>
+               <Button onAction="#handleRefresh" text="Refresh" styleClass="action-button"/>
+               
+               <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                  <Label text="Last updated:" styleClass="info-text"/>
+                  <Label fx:id="lastUpdatedLabel" text="Today" styleClass="data-value"/>
+               </HBox>
             </HBox>
+         </VBox>
+      </top>
+      
+      <!-- Main Content (Charts) -->
+      <center>
+         <TabPane styleClass="data-tabs">
+           <tabs>
+             <Tab text="Category Breakdown" styleClass="data-tab">
+               <content>
+                 <AnchorPane styleClass="chart-container">
+                      <GridPane AnchorPane.bottomAnchor="10.0" 
+                                AnchorPane.leftAnchor="10.0" 
+                                AnchorPane.rightAnchor="10.0" 
+                                AnchorPane.topAnchor="10.0">
+                         <columnConstraints>
+                            <ColumnConstraints percentWidth="70"/>
+                            <ColumnConstraints percentWidth="30"/>
+                         </columnConstraints>
+                         
+                         <!-- Chart -->
+                         <PieChart fx:id="categoryPieChart" 
+                                  GridPane.columnIndex="0" 
+                                  styleClass="pie-chart"/>
+                         
+                         <!-- Legend & Stats -->
+                         <VBox spacing="10" GridPane.columnIndex="1" styleClass="stats-container">
+                            <Label text="Top Categories" styleClass="section-title"/>
+                            <GridPane fx:id="categoryStatsGrid" vgap="5" styleClass="stats-grid">
+                               <!-- Will be populated by controller -->
+                            </GridPane>
+                            
+                            <Separator styleClass="section-divider"/>
+                            
+                            <Label text="Insights" styleClass="section-title"/>
+                            <Label fx:id="categoryInsightsLabel" 
+                                  text="Your biggest spending category is Food &amp; Dining"
+                                  wrapText="true" styleClass="insight-text"/>
+                         </VBox>
+                      </GridPane>
+                 </AnchorPane>
+               </content>
+             </Tab>
+             <Tab text="Monthly Spending" styleClass="data-tab">
+               <content>
+                 <AnchorPane styleClass="chart-container">
+                      <VBox spacing="10" AnchorPane.bottomAnchor="10.0" 
+                                        AnchorPane.leftAnchor="10.0" 
+                                        AnchorPane.rightAnchor="10.0" 
+                                        AnchorPane.topAnchor="10.0">
+                         
+                         <BarChart fx:id="monthlyBarChart" styleClass="bar-chart" VBox.vgrow="ALWAYS">
+                           <xAxis>
+                             <CategoryAxis side="BOTTOM" label="Month" styleClass="chart-axis"/>
+                           </xAxis>
+                           <yAxis>
+                             <NumberAxis label="Amount ($)" side="LEFT" styleClass="chart-axis"/>
+                           </yAxis>
+                         </BarChart>
+                         
+                         <HBox spacing="30" alignment="CENTER" styleClass="summary-container">
+                            <VBox styleClass="summary-item">
+                               <Label text="Monthly Average" styleClass="summary-title"/>
+                               <Label fx:id="monthlyAverageLabel" text="\$0.00" styleClass="summary-value"/>
+                            </VBox>
+                            <VBox styleClass="summary-item">
+                               <Label text="Highest Month" styleClass="summary-title"/>
+                               <Label fx:id="highestMonthLabel" text="January: $0.00" styleClass="summary-value"/>
+                            </VBox>
+                            <VBox styleClass="summary-item">
+                               <Label text="Lowest Month" styleClass="summary-title"/>
+                               <Label fx:id="lowestMonthLabel" text="February: $0.00" styleClass="summary-value"/>
+                            </VBox>
+                         </HBox>
+                      </VBox>
+                 </AnchorPane>
+               </content>
+             </Tab>
+             <Tab text="Payment Methods" styleClass="data-tab">
+               <content>
+                 <AnchorPane styleClass="chart-container">
+                      <GridPane AnchorPane.bottomAnchor="10.0" 
+                                AnchorPane.leftAnchor="10.0" 
+                                AnchorPane.rightAnchor="10.0" 
+                                AnchorPane.topAnchor="10.0">
+                         <columnConstraints>
+                            <ColumnConstraints percentWidth="70"/>
+                            <ColumnConstraints percentWidth="30"/>
+                         </columnConstraints>
+                         
+                         <!-- Chart -->
+                         <PieChart fx:id="paymentMethodPieChart" 
+                                  GridPane.columnIndex="0" 
+                                  styleClass="pie-chart"/>
+                         
+                         <!-- Legend & Stats -->
+                         <VBox spacing="10" GridPane.columnIndex="1" styleClass="stats-container">
+                            <Label text="Payment Methods" styleClass="section-title"/>
+                            <GridPane fx:id="paymentStatsGrid" vgap="5" styleClass="stats-grid">
+                               <!-- Will be populated by controller -->
+                            </GridPane>
+                            
+                            <Separator styleClass="section-divider"/>
+                            
+                            <Label text="Insights" styleClass="section-title"/>
+                            <Label fx:id="paymentInsightsLabel" 
+                                  text="You primarily use Credit Card for most transactions" 
+                                  wrapText="true" styleClass="insight-text"/>
+                         </VBox>
+                      </GridPane>
+                 </AnchorPane>
+               </content>
+             </Tab>
+           </tabs>
+         </TabPane>
+      </center>
+      
+      <!-- Footer Section -->
+      <bottom>
+         <VBox spacing="10.0" styleClass="footer-container">
+            <padding>
+               <Insets top="10.0" right="20.0" bottom="20.0" left="20.0" />
+            </padding>
             
-            <TabPane prefHeight="450.0" prefWidth="780.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Category Breakdown">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                         <children>
-                            <PieChart fx:id="categoryPieChart" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                         </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="Monthly Spending">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                         <children>
-                            <BarChart fx:id="monthlyBarChart" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                              <xAxis>
-                                <CategoryAxis side="BOTTOM" label="Date" />
-                              </xAxis>
-                              <yAxis>
-                                <NumberAxis label="Amount" side="LEFT" />
-                              </yAxis>
-                            </BarChart>
-                         </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="Payment Methods">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                         <children>
-                            <PieChart fx:id="paymentMethodPieChart" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                         </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-            
-            <HBox spacing="10.0">
-               <children>
-                  <Label text="Total Expenses:" />
-                  <Label fx:id="totalExpensesLabel" text="\$0.00" />
-               </children>
-            </HBox>
-            
-            <Button fx:id="backButton" onAction="#handleBack" text="Back to Expenses" />
-         </children>
-      </VBox>
-   </children>
+            <GridPane hgap="20" vgap="10">
+               <columnConstraints>
+                  <ColumnConstraints percentWidth="50"/>
+                  <ColumnConstraints percentWidth="50"/>
+               </columnConstraints>
+               
+               <!-- Summary Stats -->
+               <HBox spacing="20" alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                     styleClass="summary-stats">
+                  <VBox styleClass="stat-item">
+                     <Label text="Total Expenses:" styleClass="stat-label"/>
+                     <Label fx:id="totalExpensesLabel" text="\$0.00" styleClass="stat-value"/>
+                  </VBox>
+                  
+                  <VBox styleClass="stat-item">
+                     <Label text="Transactions:" styleClass="stat-label"/>
+                     <Label fx:id="transactionCountLabel" text="0" styleClass="stat-value"/>
+                  </VBox>
+                  
+                  <VBox styleClass="stat-item">
+                     <Label text="Avg. Transaction:" styleClass="stat-label"/>
+                     <Label fx:id="avgTransactionLabel" text="\$0.00" styleClass="stat-value"/>
+                  </VBox>
+               </HBox>
+               
+               <!-- Action Buttons -->
+               <HBox spacing="15" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                     styleClass="button-container">
+                  <Button fx:id="backButton" text="Back to Expenses" styleClass="primary-button" 
+                          onAction="#handleBack"/>
+               </HBox>
+            </GridPane>
+         </VBox>
+      </bottom>
+      
+   </BorderPane>
 </AnchorPane>

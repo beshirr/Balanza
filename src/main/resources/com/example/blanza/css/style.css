@@ -1,0 +1,294 @@
+/* Global Styles */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -primary-color: #2e86de;
+    -secondary-color: #54a0ff;
+    -accent-color: #ff6b6b;
+    -text-color: #333333;
+    -light-gray: #f5f6fa;
+    -medium-gray: #dcdde1;
+    -dark-gray: #718093;
+    -success-color: #4cd137;
+    -warning-color: #ffb142;
+    -danger-color: #ff6b6b;
+    -shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Page Background */
+.page-background {
+    -fx-background-color: -light-gray;
+}
+
+/* Container Styles */
+.header-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 6, 0, 0, 2);
+    -fx-background-radius: 0 0 10 10;
+}
+
+.content-container {
+    -fx-background-color: transparent;
+}
+
+.footer-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 6, 0, 0, -2);
+    -fx-background-radius: 10 10 0 0;
+}
+
+.sidebar-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 2, 0);
+    -fx-min-width: 200px;
+    -fx-padding: 15px;
+}
+
+.summary-cards {
+    -fx-spacing: 15px;
+}
+
+.summary-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2);
+    -fx-padding: 15px;
+    -fx-alignment: center;
+    -fx-min-width: 150px;
+    -fx-min-height: 80px;
+}
+
+.list-container {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2);
+    -fx-padding: 10px;
+}
+
+.list-header {
+    -fx-padding: 5px 0;
+    -fx-border-color: transparent transparent -medium-gray transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Text Styles */
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -dark-gray;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color;
+}
+
+.sidebar-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -dark-gray;
+}
+
+.sidebar-section {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color;
+    -fx-padding: 5px 0 2px 0;
+}
+
+.card-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -dark-gray;
+    -fx-padding: 0 0 5px 0;
+}
+
+.card-value {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-color;
+}
+
+.stat-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary-color;
+}
+
+/* Button Styles */
+.primary-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: derive(-primary-color, 20%);
+}
+
+.secondary-button {
+    -fx-background-color: -light-gray;
+    -fx-text-fill: -text-color;
+    -fx-border-color: -medium-gray;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: -medium-gray;
+}
+
+.navigation-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -primary-color;
+    -fx-border-color: -primary-color;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.navigation-button:hover {
+    -fx-background-color: derive(-primary-color, 90%);
+}
+
+.action-button {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: derive(-secondary-color, 20%);
+}
+
+/* List and Table Styles */
+.expense-list {
+    -fx-background-color: transparent;
+    -fx-background-radius: 5px;
+    -fx-border-color: -medium-gray;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.expense-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+    -fx-border-color: transparent transparent -medium-gray transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.expense-list .list-cell:last-visible {
+    -fx-border-width: 0;
+}
+
+.expense-list .list-cell:selected {
+    -fx-background-color: derive(-primary-color, 80%);
+}
+
+/* Filter Elements */
+.filter-dropdown {
+    -fx-background-color: white;
+    -fx-border-color: -medium-gray;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+/* Chart Styles */
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2);
+}
+
+.chart-pie-label {
+    -fx-fill: -text-color;
+    -fx-font-size: 12px;
+}
+
+.chart-pie {
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+.chart-bar {
+    -fx-background-radius: 3px 3px 0 0;
+    -fx-background-color: -primary-color;
+}
+
+/* Form Styles */
+.text-field, .text-area, .combo-box, .date-picker {
+    -fx-background-color: white;
+    -fx-border-color: -medium-gray;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .text-area:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: -primary-color;
+}
+
+/* Separator */
+.section-divider {
+    -fx-background-color: -medium-gray;
+    -fx-opacity: 0.5;
+}
+
+/* Tooltips */
+.tooltip {
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 8px;
+}
+
+/* Insights Labels */
+.insight-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-color;
+    -fx-wrap-text: true;
+    -fx-background-color: derive(-light-gray, 10%);
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}
+
+/* Last Updated Label */
+.timestamp-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -dark-gray;
+    -fx-font-style: italic;
+}
+
+/* Responsive Grid */
+.stats-grid {
+    -fx-hgap: 10px;
+    -fx-vgap: 8px;
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}

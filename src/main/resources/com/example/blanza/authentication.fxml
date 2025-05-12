@@ -5,18 +5,98 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.blanza.AuthenticationController"
-            prefHeight="400.0" prefWidth="600.0">
-    <Label text="Authentication"/>
-    <Label text="Email" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="20"/>
-    <TextField fx:id="emailField" promptText="enter your email"
-               AnchorPane.topAnchor="100" AnchorPane.leftAnchor="120"/>
-    <Label text="OTP" AnchorPane.topAnchor="140" AnchorPane.leftAnchor="20"/>
-    <TextField fx:id="OTPField" promptText="enter the code you received on your email"
-               AnchorPane.topAnchor="140" AnchorPane.leftAnchor="120"/>
-    <Button fx:id="verify" text="Verify" onAction="#handleVerify"
-            AnchorPane.topAnchor="350" AnchorPane.leftAnchor="300"/>
+            prefHeight="500.0" prefWidth="700.0"
+            styleClass="page-background"
+            stylesheets="@css/style.css">
+
+    <!-- Header Section -->
+    <VBox alignment="CENTER" spacing="15" 
+          AnchorPane.topAnchor="50.0" 
+          AnchorPane.leftAnchor="50.0" 
+          AnchorPane.rightAnchor="50.0"
+          styleClass="header-container">
+          
+        <Label text="Two-Factor Authentication" 
+               styleClass="page-title"/>
+        <Label text="Verify your identity to secure your account" 
+               styleClass="subtitle"/>
+               
+        <Separator prefWidth="400" 
+                   styleClass="section-divider"/>
+    </VBox>
+    
+    <!-- Information Section -->
+    <VBox alignment="CENTER" spacing="15"
+          AnchorPane.topAnchor="150.0"
+          AnchorPane.leftAnchor="100.0"
+          AnchorPane.rightAnchor="100.0"
+          styleClass="info-container">
+          
+        <Label text="We've sent a verification code to your email address" 
+               styleClass="info-text" wrapText="true" textAlignment="CENTER"/>
+        <Label text="Please check your inbox and enter the code below" 
+               styleClass="instruction-text" wrapText="true" textAlignment="CENTER"/>
+    </VBox>
+    
+    <!-- Form Section -->
+    <VBox alignment="CENTER" spacing="20"
+          AnchorPane.topAnchor="220.0"
+          AnchorPane.leftAnchor="150.0"
+          AnchorPane.rightAnchor="150.0"
+          styleClass="form-container">
+          
+        <!-- Email Field -->
+        <GridPane hgap="10" vgap="5" styleClass="form-row">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                <ColumnConstraints prefWidth="250" hgrow="ALWAYS"/>
+            </columnConstraints>
+            
+            <Label text="Email:" styleClass="form-label" 
+                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="emailField" promptText="Enter your email address"
+                      styleClass="form-field"
+                      GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        </GridPane>
+        
+        <!-- OTP Field -->
+        <GridPane hgap="10" vgap="5" styleClass="form-row">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                <ColumnConstraints prefWidth="250" hgrow="ALWAYS"/>
+            </columnConstraints>
+            
+            <Label text="Verification Code:" styleClass="form-label" 
+                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="OTPField" promptText="Enter the code from your email"
+                      styleClass="form-field"
+                      GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        </GridPane>
+        
+        <!-- Action Buttons -->
+        <HBox alignment="CENTER" spacing="15" styleClass="button-container">
+            <Button fx:id="verify" text="Verify" onAction="#handleVerify"
+                    styleClass="primary-button"/>
+        </HBox>
+    </VBox>
+    
+    <!-- Help Section -->
+    <VBox alignment="CENTER" 
+          AnchorPane.bottomAnchor="40.0" 
+          AnchorPane.leftAnchor="100.0" 
+          AnchorPane.rightAnchor="100.0"
+          styleClass="help-container">
+          
+        <Label text="Having trouble?" styleClass="helper-title"/>
+        <HBox alignment="CENTER" spacing="5">
+            <Label text="If you didn't receive a code," styleClass="helper-text"/>
+            <Hyperlink text="contact support" styleClass="link-text"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

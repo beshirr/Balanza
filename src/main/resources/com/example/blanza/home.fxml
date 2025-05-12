@@ -5,16 +5,105 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.blanza.Home"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="600.0" prefWidth="800.0"
+            styleClass="page-background"
+            stylesheets="@css/style.css">
+            
+    <BorderPane AnchorPane.topAnchor="0.0" 
+                AnchorPane.rightAnchor="0.0" 
+                AnchorPane.bottomAnchor="0.0" 
+                AnchorPane.leftAnchor="0.0">
+                
+        <!-- Header Section -->
+        <top>
+            <VBox spacing="10" styleClass="header-container">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="10.0" left="20.0" />
+                </padding>
+                
+                <Label text="Balanza" styleClass="page-title" />
+                <Label text="Your Personal Finance Manager" styleClass="subtitle" />
+                
+                <Separator styleClass="section-divider" />
+            </VBox>
+        </top>
+        
+        <!-- Main Content -->
+        <center>
+            <VBox spacing="30" alignment="CENTER" styleClass="content-container">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+                </padding>
 
-    <HBox>
-        <Button onAction="#handleExpensesBtn">Expenses</Button>
-        <Button onAction="#handleBudgetBtn">Budget</Button>
-        <Button onAction="#handleIncomeBtn">Income</Button>
-        <Button onAction="#handleRemindersBtn">Reminders</Button>
-    </HBox>
+                <!-- Title -->
+                <Label text="Dashboard" styleClass="section-title" />
+
+                <!-- Main Navigation Buttons -->
+                <VBox spacing="20" alignment="CENTER">
+                    <HBox spacing="15" alignment="CENTER">
+                        <Button onAction="#handleExpensesBtn" 
+                                styleClass="primary-button" 
+                                prefWidth="150" prefHeight="50">
+                            <graphic>
+                                <VBox alignment="CENTER">
+                                    <Label text="Expenses" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                </VBox>
+                            </graphic>
+                        </Button>
+                        
+                        <Button onAction="#handleBudgetBtn" 
+                                styleClass="primary-button" 
+                                prefWidth="150" prefHeight="50">
+                            <graphic>
+                                <VBox alignment="CENTER">
+                                    <Label text="Budget" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                </VBox>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    
+                    <HBox spacing="15" alignment="CENTER">
+                        <Button onAction="#handleIncomeBtn" 
+                                styleClass="primary-button" 
+                                prefWidth="150" prefHeight="50">
+                            <graphic>
+                                <VBox alignment="CENTER">
+                                    <Label text="Income" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                </VBox>
+                            </graphic>
+                        </Button>
+                        
+                        <Button onAction="#handleRemindersBtn" 
+                                styleClass="primary-button" 
+                                prefWidth="150" prefHeight="50">
+                            <graphic>
+                                <VBox alignment="CENTER">
+                                    <Label text="Reminders" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                </VBox>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </center>
+        
+        <!-- Footer Section -->
+        <bottom>
+            <HBox alignment="CENTER" styleClass="footer-container">
+                <padding>
+                    <Insets top="10.0" right="20.0" bottom="15.0" left="20.0" />
+                </padding>
+                
+                <Label text="Track your finances with ease" styleClass="timestamp-label" />
+            </HBox>
+        </bottom>
+        
+    </BorderPane>
 </AnchorPane>
