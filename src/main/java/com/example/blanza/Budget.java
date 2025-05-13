@@ -1,11 +1,11 @@
 package com.example.blanza;
 
-public class Budgeting extends FinancialEntity {
+public class Budget extends FinancialEntity {
     private String category;
     private double actual_spend;
     private double remaining_budget;
 
-    public Budgeting(String category, double amount, double actual_spend, int user_id){
+    public Budget(String category, double amount, double actual_spend, int user_id) {
         super(user_id, amount);
         this.category = category;
         this.actual_spend = 0.0;

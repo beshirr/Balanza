@@ -3,7 +3,7 @@ package com.example.blanza;
 /**
  * The type User info.
  */
-public class UserInfo {
+public class User {
 
     int Id;
     String username;
@@ -22,7 +22,7 @@ public class UserInfo {
      * @param password    the password
      * @param otp         the otp
      */
-    public UserInfo(int Id, String username, String email, String phoneNumber, String password, String otp, boolean verified) {
+    public User(int Id, String username, String email, String phoneNumber, String password, String otp, boolean verified) {
         this.Id = Id;
         this.username = username;
         this.email = email;

@@ -4,11 +4,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -38,42 +36,35 @@ public class TrackExpenses {
 
     @FXML
     private void handleAddExpense() {
-        // Create a custom dialog
         Dialog<Expense> dialog = new Dialog<>();
         dialog.setTitle("Add New Expense");
         dialog.setHeaderText("Enter expense details");
         
-        // Apply styles to dialog pane
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         dialogPane.getStyleClass().add("list-container");
         
-        // Set the button types
         ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
         
-        // Style the buttons
         Button saveButton = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
         saveButton.getStyleClass().add("primary-button");
         
         Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
         cancelButton.getStyleClass().add("secondary-button");
 
-        // Create the form content
         GridPane grid = new GridPane();
         grid.setHgap(15);
         grid.setVgap(15);
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.getStyleClass().add("stats-grid");
 
-        // Create editable combo box for categories
         ComboBox<String> categoryComboBox = new ComboBox<>();
         categoryComboBox.setEditable(true);
         categoryComboBox.setPromptText("Select or create category");
         categoryComboBox.getStyleClass().add("combo-box");
         categoryComboBox.setPrefWidth(250);
         
-        // Populate with existing categories
         populateCategoryComboBox(categoryComboBox);
 
         // Create editable combo box for payment methods
@@ -160,7 +151,7 @@ public class TrackExpenses {
         Optional<Expense> result = dialog.showAndWait();
         
         result.ifPresent(expense -> {
-            expenseManager.addExpense(expense);
+            expenseManager.addEntity(expense);
             
             // Confirmation message with styling
             showSuccessAlert("Expense added successfully!");
@@ -228,7 +219,6 @@ public class TrackExpenses {
             categories.add(expense.getCategory());
         }
         
-        // Add to combo box
         comboBox.getItems().addAll(categories);
     }
 

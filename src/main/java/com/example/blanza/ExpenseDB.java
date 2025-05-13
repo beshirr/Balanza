@@ -1,52 +1,36 @@
 package com.example.blanza;
 
-import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ExpenseDB extends Database {
-    public static void insertExpense(Expense e) {
-        String sql = SQLLoader.get("insert_expense");
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(2, e.getCategory());
-            pstmt.setFloat(3, e.getAmount());
-            pstmt.setString(4, e.getDate().toString());
-            pstmt.setString(5, e.getPaymentMethod());
-            pstmt.setInt(1, e.getCurrent_user_id());
-            pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+public class ExpenseDB extends Database<Expense> {
+    @Override
+    public void insertToDatabase(Expense e) {
+        executeUpdateQuery("insert_expense", (stmt) -> {
+            stmt.setInt(1, e.getCurrentUserId());
+            stmt.setString(2, e.getCategory());
+            stmt.setDouble(3, e.getAmount());
+            stmt.setString(4, e.getDate().toString());
+            stmt.setString(5, e.getPaymentMethod());
+        });
     }
 
-    public static List<Expense> getAllExpenses() {
-        List<Expense> expenses = new ArrayList<>();
-        int userId = SessionService.getCurrentUserId();
-        if (userId <= 0) {
+    @Override
+    public List<Expense> getAllFromDatabase() {
+        if (currentUserId <= 0) {
             System.err.println("Error: Invalid user ID");
-            return expenses;
+            return List.of();
         }
 
-        String sql = SQLLoader.get("select_all_expenses");
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String category = rs.getString("category");
-                float amount = rs.getFloat("amount");
-                LocalDate date = LocalDate.parse(rs.getString("date"));
-                String method = rs.getString("payment_method");
-
-                expenses.add(new Expense(id, category, amount, date, method));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return expenses;
+        return executeQuery("select_all_expenses", stmt -> {
+            stmt.setInt(1, currentUserId);
+        }, rs -> {
+            int id = rs.getInt("id");
+            String category = rs.getString("category");
+            double amount = rs.getDouble("amount");
+            LocalDate date = LocalDate.parse(rs.getString("date"));
+            String method = rs.getString("payment_method");
+            return new Expense(id, category, amount, date, method);
+        });
     }
 }

@@ -1,118 +1,88 @@
 package com.example.blanza;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
-public class BudgetDB extends Database {
+public class BudgetDB extends Database<Budget> {
 
-    public static void insertBudget(Budgeting budget) {
-        String sql = SQLLoader.get("insert_budget");
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, budget.getCategory());
-            pstmt.setDouble(2, budget.getBudgetAmount());
-            pstmt.setDouble(3, budget.getActual_spend());
-            pstmt.setDouble(4, budget.getRemaining_budget());
-            pstmt.setInt(5, budget.getUser_id());
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println("Error while inserting budget: " + e.getMessage());
-        }
+    @Override
+    public void insertToDatabase(Budget budget) {
+        executeUpdateQuery("insert_budget", stmt -> {
+            stmt.setString(1, budget.getCategory());
+            stmt.setDouble(2, budget.getAmount());
+            stmt.setDouble(3, budget.getActual_spend());
+            stmt.setDouble(4, budget.getRemaining_budget());
+            stmt.setInt(5, budget.getCurrentUserId());
+        });
     }
 
-
-    public static void updateBudgetSpend(int budgetId, double actualSpend, double remainingBudget) {
-        String sql = SQLLoader.get("update_budget_spend");
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setDouble(1, actualSpend);
-            pstmt.setDouble(2, remainingBudget);
-            pstmt.setInt(3, budgetId);
-            pstmt.executeUpdate(); // Execute the update statement
-
-        } catch (SQLException e) {
-            System.out.println("Error while updating budget spend: " + e.getMessage());
-        }
-    }
-
-    // Retrieve budgets by user ID
-    public static void getBudgetsByUserId(int userId) {
-        String sql = SQLLoader.get("select_budget_by_user_id");
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-
-                String category = rs.getString("category");
-                double budgetAmount = rs.getDouble("budget_amount");
-                double actualSpend = rs.getDouble("actual_spend");
-                double remainingBudget = rs.getDouble("remaining_budget");
-                System.out.println("Category: " + category + ", Budget Amount: " + budgetAmount +
-                        ", Actual Spend: " + actualSpend + ", Remaining Budget: " + remainingBudget);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error while retrieving budgets: " + e.getMessage());
-        }
-    }
-
-    public static void updateBudget(Budgeting budget) {
-        String sql = SQLLoader.get("update_budget");  // Query to update budget
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setDouble(1, budget.getActual_spend());
-            pstmt.setDouble(2, budget.getRemaining_budget());
-            pstmt.setString(3, budget.getCategory());
-            pstmt.setInt(4, budget.getUser_id());
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println("Error while updating budget: " + e.getMessage());
-        }
-    }
-
-    public static Budgeting getBudgetByCategory(String category, int userId) {
-        String sql = SQLLoader.get("select_budget_by_category_and_user");
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, category);
-            pstmt.setInt(2, userId);
-            ResultSet rs = pstmt.executeQuery();  //
-
-            if (rs.next()) {
-
-                String budgetCategory = rs.getString("category");
-                double budgetAmount = rs.getDouble("budget_amount");
-                double actualSpend = rs.getDouble("actual_spend");
-                double remainingBudget = rs.getDouble("remaining_budget");
-
-                Budgeting budget = new Budgeting(budgetCategory, budgetAmount, actualSpend, userId);
-                budget.setRemaining_budget(remainingBudget);
-                return budget;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error while retrieving budget: " + e.getMessage());
+    @Override
+    public List<Budget> getAllFromDatabase() {
+        if (currentUserId <= 0) {
+            System.err.println("Error: Invalid user ID");
+            return List.of();
         }
 
-        return null;
+        return executeQuery("select_all_budgets", stmt -> {
+            stmt.setInt(1, currentUserId);
+        }, rs -> {
+            String category = rs.getString("category");
+            double amount = rs.getDouble("budget_amount");
+            double actual_spent = rs.getDouble("actual_spend");
+            return new Budget(category, amount, actual_spent, currentUserId
+            );
+        });
     }
 
+    public void updateBudgetSpend(int budgetId, double actualSpend, double remainingBudget) {
+        executeUpdateQuery("update_budget_spend", stmt -> {
+            stmt.setDouble(1, actualSpend);
+            stmt.setDouble(2, remainingBudget);
+            stmt.setInt(3, budgetId);
+        });
+    }
 
+    public void updateBudget(Budget budget) {
+        executeUpdateQuery("update_budget", stmt -> {
+            stmt.setDouble(1, budget.getActual_spend());
+            stmt.setDouble(2, budget.getRemaining_budget());
+            stmt.setString(3, budget.getCategory());
+            stmt.setInt(4, budget.getCurrentUserId());
+        });
+    }
+
+    public Budget getBudgetByCategory(String category, int userId) {
+        List<Budget> budgets = executeQuery("select_budget_by_category_and_user", stmt -> {
+            stmt.setString(1, category);
+            stmt.setInt(2, userId);
+        }, rs -> {
+            String budgetCategory = rs.getString("category");
+            double budgetAmount = rs.getDouble("budget_amount");
+            double actualSpend = rs.getDouble("actual_spend");
+            double remainingBudget = rs.getDouble("remaining_budget");
+
+            Budget budget = new Budget(budgetCategory, budgetAmount, actualSpend, userId);
+            budget.setRemaining_budget(remainingBudget);
+            return budget;
+        });
+
+        return budgets.isEmpty() ? null : budgets.get(0);
+    }
+
+    public void getBudgetsByUserId(int userId) {
+        List<Budget> budgets = executeQuery("select_budget_by_user_id", stmt -> {
+            stmt.setInt(1, userId);
+        }, rs -> {
+            String category = rs.getString("category");
+            double budgetAmount = rs.getDouble("budget_amount");
+            double actualSpend = rs.getDouble("actual_spend");
+            return new Budget(category, budgetAmount, actualSpend, userId);
+        });
+
+        for (Budget b : budgets) {
+            System.out.println("Category: " + b.getCategory() +
+                    ", Budget Amount: " + b.getAmount() +
+                    ", Actual Spend: " + b.getActual_spend() +
+                    ", Remaining Budget: " + b.getRemaining_budget());
+        }
+    }
 }

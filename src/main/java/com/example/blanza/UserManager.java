@@ -90,7 +90,7 @@ public class UserManager {
             return false;
         }
         else if (UserDB.getUserInfoByEmail(email) != null){
-            UserInfo userInfo = UserDB.getUserInfoByEmail(email);
+            User userInfo = UserDB.getUserInfoByEmail(email);
             if (!userInfo.getPassword().equals(password)){
                 return false;
             }

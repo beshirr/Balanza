@@ -73,6 +73,12 @@ CREATE TABLE IF NOT EXISTS income (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- @insert_income
+INSERT INTO income(user_id, source, amount, date)
+VALUES(?, ?, ?, ?);
+
+-- @select_all_incomes
+Select * From income WHERE user_id=?;
 
 -- @create_budget_table
 CREATE TABLE IF NOT EXISTS budgets (
@@ -81,20 +87,24 @@ CREATE TABLE IF NOT EXISTS budgets (
     budget_amount REAL NOT NULL,
     actual_spend REAL DEFAULT 0,
     remaining_budget REAL NOT NULL,
-
     user_id INTEGER NOT NULL,
-
-
     FOREIGN KEY (user_id) REFERENCES users(id)
-    );
+);
+
+-- @select_all_budgets
+SELECT * FROM budgets WHERE user_id=?;
+
+
 -- @select_budget_by_user_id
 SELECT * FROM budgets WHERE user_id = ?;
+
 -- @update_budget_spend
 UPDATE budgets SET actual_spend = ?, remaining_budget = ? WHERE id = ?;
 
 -- @insert_budget
 INSERT INTO budgets (category, budget_amount, actual_spend, remaining_budget, user_id)
 VALUES (?, ?, ?, ?, ?);
+
 -- @update_budget
 UPDATE budgets
 SET actual_spend = ?, remaining_budget = ?

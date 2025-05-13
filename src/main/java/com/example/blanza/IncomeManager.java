@@ -1,6 +1,7 @@
 package com.example.blanza;
 
 public class IncomeManager  extends FinancialEntityManager<Income> {
+    private final IncomeDB db = new IncomeDB();
     @Override
     protected boolean validate(Income income) {
         return income.getAmount() >= 0;
@@ -8,6 +9,6 @@ public class IncomeManager  extends FinancialEntityManager<Income> {
 
     @Override
     protected void saveToDatabase(Income income) {
-        IncomeDB.insertIncome(income);
+        db.insertToDatabase(income);
     }
 }

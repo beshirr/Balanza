@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -25,8 +24,8 @@ public class IncomeTrackingController {
 
     public void initialize() {
         int userId = SessionService.getCurrentUserId();
-        income = new Income("", 0.0, LocalDate.now());
-        income.setUser_id(userId); // Link to current user
+        income = new Income(SessionService.getCurrentUserId(),"", 0.0, LocalDate.now());
+        income.setUser_id(userId);
     }
 
 
