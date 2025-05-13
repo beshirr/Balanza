@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import java.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -13,24 +13,51 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.blanza.BudgetingTrackingController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="600.0" prefWidth="600.0">
 
+    <!-- Budget Category Label and TextField -->
     <Label text="Budget Category:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-    <TextField fx:id="categoryField" promptText="Enter budget category" AnchorPane.leftAnchor="120.0"
-               AnchorPane.topAnchor="20.0" prefWidth="200.0"/>
+    <TextField fx:id="categoryField" promptText="Enter budget category"
+               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="20.0" prefWidth="200.0"/>
 
-    <Label text="Budget Amount:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="60.0"/>
+    <!-- Budget Amount Label and TextField -->
+    <Label text="Budget Amount:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="80.0"/>
     <TextField fx:id="budgetAmountField" promptText="Enter budget amount"
-               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="60.0" prefWidth="200.0"/>
+               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="80.0" prefWidth="200.0"/>
 
+    <!-- Save Budget Button -->
     <Button text="Save Budget" fx:id="saveButton"
-            AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="100.0" onAction="#handleSaveBudget"/>
+            AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="140.0" onAction="#handleSaveBudget"/>
 
-    <Label fx:id="remainingBudgetLabel" text="Remaining Budget: 0.0"
-           AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="140.0"/>
+    <!-- Display Budgets Button -->
+    <Button text="Display Budgets" fx:id="displayBudgetsButton"
+            AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="200.0" onAction="#handleDisplayBudgets"/>
 
+    <!-- VBox to display all budgets -->
+    <VBox fx:id="budgetsVBox" spacing="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="240.0">
+        <!-- Dynamically populated with budgets -->
+    </VBox>
+
+    <!-- Back to Home Button -->
     <Button text="Back to Home" fx:id="backButton"
-            AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="100.0" onAction="#handleBack"/>
+            AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="500.0" onAction="#handleBack"/>
 
+    <!-- Update Budget Section -->
+    <Label text="Update Budget" fx:id="h"
+           AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="300.0"/>
+
+    <Label text="Enter Budget Category for Update:" fx:id="updateCategoryLabel"
+           AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="340.0" visible="false"/>
+    <TextField fx:id="updateCategoryField" promptText="Enter category to update"
+               AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="340.0" prefWidth="200.0" visible="false"/>
+
+    <Label text="Enter Actual Spend to Update:" fx:id="updateActualSpendLabel"
+           AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="380.0" visible="false"/>
+    <TextField fx:id="updateActualSpendField" promptText="Enter actual spend"
+               AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="380.0" prefWidth="200.0" visible="false"/>
+
+    <!-- Update Budget Button -->
+    <Button text="Update" fx:id="updateBudgetButton"
+            AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="420.0" onAction="#handleUpdateBudget"/>
 
 </AnchorPane>
