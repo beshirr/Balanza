@@ -8,6 +8,13 @@ A Java application for managing financial information using SQLite database
 2. Clone this repo
 3. Run `Main.java` from IntelliJ
 
+## Technologies
+- **Java 11+ & JavaFX:** For the user interface and application logic.
+- **Maven:** For project management and dependency resolution.
+- **SQLite:** Lightweight database for persistence.
+- **CSS:** For styling the JavaFX UI. See [style.css](src/main/resources/com/example/blanza/css/style.css).
+
+
 ## Dependencies
 
 - Java 23
@@ -25,3 +32,4 @@ A Java application for managing financial information using SQLite database
 - Zeyad -> zeyadarafat833@gmail.com
 - Youssef -> youssefahmedbehsir@gmail.com
 - Moaaz -> moaazmohamedsoliman1@gmail.com
+
