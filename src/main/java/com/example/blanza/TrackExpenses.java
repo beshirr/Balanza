@@ -147,7 +147,7 @@ public class TrackExpenses {
                         return null;
                     }
                     
-                    return new Expense(Session.getCurrentUserId(), category, amount, date, paymentMethod);
+                    return new Expense(SessionService.getCurrentUserId(), category, amount, date, paymentMethod);
                 } catch (NumberFormatException e) {
                     showErrorAlert("Invalid amount entered");
                     return null;

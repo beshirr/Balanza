@@ -24,7 +24,7 @@ public class FinancialTaskDB extends Database {
     public static int insertFinancialTask(String title, String description, 
                                          LocalDate dueDate, double amount, String category, 
                                          FinancialTask.TaskStatus status) {
-        int userId = Session.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         if (userId <= 0) {
             System.err.println("Error: Invalid user ID");
             return -1;
@@ -79,7 +79,7 @@ public class FinancialTaskDB extends Database {
      */
     public static List<FinancialTask> getAllFinancialTasks() {
         List<FinancialTask> tasks = new ArrayList<>();
-        int userId = Session.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         if (userId <= 0) {
             System.err.println("Error: Invalid user ID");
             return tasks;
@@ -205,7 +205,7 @@ public class FinancialTaskDB extends Database {
      */
     public static List<FinancialTask> getUpcomingFinancialTasks() {
         List<FinancialTask> tasks = new ArrayList<>();
-        int userId = Session.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         if (userId <= 0) {
             System.err.println("Error: Invalid user ID");
             return tasks;

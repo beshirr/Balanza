@@ -105,15 +105,15 @@ public class ReminderManager {
     /**
      * Sends a notification for a specific reminder
      */
-private void sendNotification(Reminder reminder) {
-        // TODO: Send an actual email
-        String body = "NOTIFICATION: " + reminder.toString();
-        Dotenv dotenv = Dotenv.configure().directory(".").load();
-        String email = dotenv.get("EMAIL_SENDER");
-        String password = dotenv.get("PASS");
-        EmailManager emailManager = new EmailManager(email, password);
-        emailManager.sendEmail(UserDB.getUserEmailById(Session.getCurrentUserId()), "Balanza Reminder", body);
-    }
+//private void sendNotification(Reminder reminder) {
+//        // TODO: Send an actual email
+//        String body = "NOTIFICATION: " + reminder.toString();
+//        Dotenv dotenv = Dotenv.configure().directory(".").load();
+//        String email = dotenv.get("EMAIL_SENDER");
+//        String password = dotenv.get("PASS");
+//        EmailManager emailManager = new EmailManager(email, password);
+//        emailManager.sendEmail(UserDB.getUserEmailById(Session.getCurrentUserId()), "Balanza Reminder", body);
+//    }
 
     /**
      * Starts the reminder service thread

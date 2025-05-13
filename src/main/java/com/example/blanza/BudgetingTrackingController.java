@@ -49,7 +49,7 @@ public class BudgetingTrackingController {
 
     // Initialize the Budgeting model
     public void initialize() {
-        int userId = Session.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         budget = new Budgeting("", 0.0, 0.0, userId);
 
     }

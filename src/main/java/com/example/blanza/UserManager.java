@@ -20,7 +20,7 @@ public class UserManager {
         }
         else {
             String otp = OTPGenerator.generateOTP();
-            //AuthenticationService.sendOTP(email, otp);
+            AuthenticationService.sendOTP(email, otp);
             createUser(username, email, phoneNumber, password);
             UserDB.setOTP(email, otp);
             SessionManager.saveSession(UserDB.getUserInfoByUsername(username).getId());
