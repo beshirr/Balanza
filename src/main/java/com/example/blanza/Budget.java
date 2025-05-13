@@ -4,12 +4,13 @@ public class Budget extends FinancialEntity {
     private String category;
     private double actual_spend;
     private double remaining_budget;
+    private int id; // Add a field for the database ID
 
     public Budget(String category, double amount, double actual_spend, int user_id) {
         super(user_id, amount);
         this.category = category;
         this.actual_spend = actual_spend;
-        this.remaining_budget = amount;
+        this.remaining_budget = amount - actual_spend;
     }
 
     public String getCategory() {
@@ -38,5 +39,14 @@ public class Budget extends FinancialEntity {
 
     public void updateRemainingBudget() {
         this.remaining_budget = this.amount - this.actual_spend;
+    }
+    
+    // Add getters and setters for the ID field
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
     }
 }

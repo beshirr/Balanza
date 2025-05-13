@@ -1,144 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import java.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.blanza.BudgetingTrackingController"
             prefHeight="600.0" prefWidth="800.0"
             styleClass="page-background"
             stylesheets="@css/style.css">
 
-    <!-- Page Title -->
-    <Label text="Budget Tracker" 
-           AnchorPane.leftAnchor="50.0" 
-           AnchorPane.topAnchor="30.0"
-           styleClass="page-title"/>
+    <!-- Top - Page Title -->
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20" />
+            </padding>
 
-    <!-- Budget Category Label and TextField -->
-    <Label text="Budget Category:" 
-           AnchorPane.leftAnchor="200.0" 
-           AnchorPane.topAnchor="100.0"
-           styleClass="stat-label"/>
-           
-    <ComboBox fx:id="categoryField"
-               promptText="Enter budget category"
-               AnchorPane.leftAnchor="350.0" 
-               AnchorPane.topAnchor="100.0" 
-               prefWidth="250.0"
-               styleClass="text-field"
-                editable="true"/>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Budget Tracker" styleClass="page-title" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="Back to Home"
+                        onAction="#handleBack"
+                        styleClass="navigation-button"/>
+            </HBox>
 
-    <!-- Budget Amount Label and TextField -->
-    <Label text="Budget Amount:" 
-           AnchorPane.leftAnchor="200.0" 
-           AnchorPane.topAnchor="150.0"
-           styleClass="stat-label"/>
-           
-    <TextField fx:id="budgetAmountField" 
-               promptText="Enter budget amount"
-               AnchorPane.leftAnchor="350.0" 
-               AnchorPane.topAnchor="150.0" 
-               prefWidth="250.0"
-               styleClass="text-field"/>
+            <Separator />
+        </VBox>
+    </top>
 
-    <!-- Save Budget Button -->
-    <Button text="Save Budget" 
-            fx:id="saveButton"
-            AnchorPane.leftAnchor="350.0" 
-            AnchorPane.topAnchor="200.0" 
-            prefWidth="120.0"
-            onAction="#handleSaveBudget"
-            styleClass="primary-button"/>
+    <!-- Center - Content -->
+    <center>
+        <VBox spacing="20">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="20" />
+            </padding>
 
-    <!-- Display Budgets Button -->
-    <Button text="Display Budgets" 
-            fx:id="displayBudgetsButton"
-            AnchorPane.leftAnchor="480.0" 
-            AnchorPane.topAnchor="200.0" 
-            prefWidth="120.0"
-            onAction="#handleDisplayBudgets"
-            styleClass="secondary-button"/>
+            <!-- New Budget Form -->
+            <TitledPane text="Create New Budget" expanded="true">
+                <VBox spacing="15" styleClass="form-container">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15" />
+                    </padding>
 
-    <!-- VBox to display all budgets -->
-    <VBox fx:id="budgetsVBox" 
-          spacing="10.0" 
-          AnchorPane.leftAnchor="200.0" 
-          AnchorPane.topAnchor="250.0"
-          prefWidth="400.0"
-          styleClass="list-container">
-        <!-- Dynamically populated with budgets -->
-    </VBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Category:" minWidth="80" />
+                        <ComboBox fx:id="categoryComboBox" promptText="Select or enter category" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                    </HBox>
 
-    <!-- Update Budget Section -->
-    <Label text="Update Budget" 
-           fx:id="h"
-           AnchorPane.leftAnchor="200.0" 
-           AnchorPane.topAnchor="370.0"
-           styleClass="section-title"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Amount:" minWidth="80" />
+                        <TextField fx:id="budgetAmountField" promptText="Enter budget amount" HBox.hgrow="ALWAYS" />
+                    </HBox>
 
-    <Label text="Enter Budget Category for Update:" 
-           fx:id="updateCategoryLabel"
-           AnchorPane.leftAnchor="200.0" 
-           AnchorPane.topAnchor="410.0" 
-           visible="false"
-           styleClass="stat-label"/>
-           
-    <TextField fx:id="updateCategoryField" 
-               promptText="Enter category to update"
-               AnchorPane.leftAnchor="430.0" 
-               AnchorPane.topAnchor="410.0" 
-               prefWidth="170.0" 
-               visible="false"
-               styleClass="text-field"/>
+                    <HBox spacing="10" alignment="CENTER_RIGHT">
+                        <Button text="Save Budget" onAction="#handleSaveBudget" styleClass="primary-button" />
+                    </HBox>
 
-    <Label text="Enter Actual Spend to Update:" 
-           fx:id="updateActualSpendLabel"
-           AnchorPane.leftAnchor="200.0" 
-           AnchorPane.topAnchor="450.0" 
-           visible="false"
-           styleClass="stat-label"/>
-           
-    <TextField fx:id="updateActualSpendField" 
-               promptText="Enter actual spend"
-               AnchorPane.leftAnchor="430.0" 
-               AnchorPane.topAnchor="450.0" 
-               prefWidth="170.0" 
-               visible="false"
-               styleClass="text-field"/>
+                    <Label fx:id="remainingBudgetLabel" styleClass="info-message" />
+                </VBox>
+            </TitledPane>
 
-    <!-- Update Budget Button -->
-    <Button text="Update" 
-            fx:id="updateBudgetButton"
-            AnchorPane.leftAnchor="350.0" 
-            AnchorPane.topAnchor="500.0" 
-            prefWidth="120.0"
-            onAction="#handleUpdateBudget"
-            styleClass="primary-button"/>
-
-    <!-- Back to Home Button -->
-    <Button text="Back to Home" 
-            fx:id="backButton"
-            AnchorPane.leftAnchor="480.0" 
-            AnchorPane.topAnchor="500.0" 
-            prefWidth="120.0"
-            onAction="#handleBack"
-            styleClass="navigation-button"/>
-
-    <!-- Remaining Budget Label (referenced in controller) -->
-    <Label fx:id="remainingBudgetLabel" 
-           text="Remaining Budget: 0.0"
-           AnchorPane.leftAnchor="350.0" 
-           AnchorPane.topAnchor="320.0"
-           styleClass="card-value"/>
-
-</AnchorPane>
+            <!-- Budgets List -->
+            <TitledPane text="Your Budgets" expanded="true">
+                <ScrollPane fitToWidth="true" styleClass="transparent-background">
+                    <VBox fx:id="budgetsVBox" spacing="5" styleClass="list-container">
+                        <!-- This will be populated dynamically -->
+                    </VBox>
+                </ScrollPane>
+            </TitledPane>
+        </VBox>
+    </center>
+</BorderPane>

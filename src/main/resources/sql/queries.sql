@@ -83,32 +83,36 @@ Select * From income WHERE user_id=?;
 -- @create_budget_table
 CREATE TABLE IF NOT EXISTS budgets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    category TEXT UNIQUE ,
-    budget_amount REAL NOT NULL,
-    actual_spend REAL DEFAULT 0,
-    remaining_budget REAL NOT NULL,
     user_id INTEGER NOT NULL,
+    category TEXT NOT NULL,
+    budget_amount REAL NOT NULL,
+    actual_spend REAL NOT NULL DEFAULT 0,
+    remaining_budget REAL NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- @select_all_budgets
-SELECT * FROM budgets WHERE user_id=?;
+-- @insert_budget
+INSERT INTO budgets (user_id, category, budget_amount, actual_spend, remaining_budget) 
+VALUES (?, ?, ?, ?, ?);
 
+-- @select_all_budgets
+SELECT * FROM budgets WHERE user_id = ?;
 
 -- @select_budget_by_user_id
 SELECT * FROM budgets WHERE user_id = ?;
 
--- @update_budget_spend
-UPDATE budgets SET actual_spend = ?, remaining_budget = ? WHERE id = ?;
+-- @select_budget_by_category
+SELECT * FROM budgets WHERE user_id = ? AND category = ?;
 
--- @insert_budget
-INSERT INTO budgets (category, budget_amount, actual_spend, remaining_budget, user_id)
-VALUES (?, ?, ?, ?, ?);
+-- @update_budget_spend
+UPDATE budgets
+SET category = ?, budget_amount = ?, actual_spend = ?, remaining_budget = ?
+WHERE id = ? AND user_id = ?;
+
 
 -- @update_budget
-UPDATE budgets
-SET actual_spend = ?, remaining_budget = ?
-WHERE category = ? AND user_id = ?;
+UPDATE budgets SET category = ?, budget_amount = ?, actual_spend = ?, remaining_budget = ? 
+WHERE id = ? AND user_id = ?;
 
 -- @select_budget_by_category_and_user
 SELECT * FROM budgets WHERE category = ? AND user_id = ?;

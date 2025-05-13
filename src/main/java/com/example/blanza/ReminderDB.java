@@ -41,7 +41,7 @@ public class ReminderDB extends Database<Reminder> {
             return List.of();
         }
 
-        return executeQuery("select_all_reminders", stmt -> {
+        return executeQuery("get_user_reminders", stmt -> {
             stmt.setInt(1, currentUserId);
         }, rs -> {
             FinancialTaskDB db = new FinancialTaskDB();

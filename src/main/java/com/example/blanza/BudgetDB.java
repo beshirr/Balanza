@@ -6,83 +6,78 @@ public class BudgetDB extends Database<Budget> {
 
     @Override
     public void insertToDatabase(Budget budget) {
-        executeUpdateQuery("insert_budget", stmt -> {
+        executeUpdateQuery("insert_budget", (stmt) -> {
+            // Make sure parameters are in the correct order as defined in the SQL
+            stmt.setInt(1, budget.getCurrentUserId());         // user_id
+            stmt.setString(2, budget.getCategory());    // category
+            stmt.setDouble(3, budget.getAmount());      // budget_amount
+            stmt.setDouble(4, budget.getActual_spend()); // actual_spend
+            stmt.setDouble(5, budget.getRemaining_budget()); // remaining_budget
+        });
+    }
+
+    /**
+     * Get all budgets for the current user
+     */
+    @Override
+    public List<Budget> getAllFromDatabase() {
+        return executeQuery("select_all_budgets", stmt -> {
+            stmt.setInt(1, SessionService.getCurrentUserId());
+        }, rs -> {
+            int id = rs.getInt("id");
+            int userId = rs.getInt("user_id");
+            String category = rs.getString("category");
+            double amount = rs.getDouble("budget_amount");
+            double actualSpend = rs.getDouble("actual_spend");
+            double remainingBudget = rs.getDouble("remaining_budget");
+
+            Budget budget = new Budget(category, amount, actualSpend, userId);
+            budget.setId(id);
+            budget.setRemaining_budget(remainingBudget);
+
+            return budget;
+        });
+    }
+
+    /**
+     * Get a budget by category for the current user
+     * @param category Budget category
+     * @param userId User ID
+     * @return Budget or null if not found
+     */
+    public Budget getBudgetByCategory(String category, int userId) {
+        List<Budget> budgets = executeQuery("select_budget_by_category", stmt -> {
+            stmt.setInt(1, userId);
+            stmt.setString(2, category);
+        }, rs -> {
+            int id = rs.getInt("id");
+            double amount = rs.getDouble("budget_amount");
+            double actualSpend = rs.getDouble("actual_spend");
+            double remainingBudget = rs.getDouble("remaining_budget");
+
+            Budget budget = new Budget(category, amount, actualSpend, userId);
+            budget.setId(id);
+            budget.setRemaining_budget(remainingBudget);
+
+            return budget;
+        });
+
+        return budgets.isEmpty() ? null : budgets.get(0);
+    }
+
+    /**
+     * Update an existing budget
+     * @param budget Budget to update
+     * @return true if successful
+     */
+    public void updateBudget(Budget budget) {
+        executeUpdateQuery("update_budget", stmt -> {
             stmt.setString(1, budget.getCategory());
             stmt.setDouble(2, budget.getAmount());
             stmt.setDouble(3, budget.getActual_spend());
             stmt.setDouble(4, budget.getRemaining_budget());
-            stmt.setInt(5, budget.getCurrentUserId());
+            stmt.setInt(5, budget.getId());
+            stmt.setInt(6, budget.getCurrentUserId());;
         });
-    }
-
-    @Override
-    public List<Budget> getAllFromDatabase() {
-        if (currentUserId <= 0) {
-            System.err.println("Error: Invalid user ID");
-            return List.of();
-        }
-
-        return executeQuery("select_all_budgets", stmt -> {
-            stmt.setInt(1, currentUserId);
-        }, rs -> {
-            String category = rs.getString("category");
-            double amount = rs.getDouble("budget_amount");
-            double actual_spent = rs.getDouble("actual_spend");
-            return new Budget(category, amount, actual_spent, currentUserId
-            );
-        });
-    }
-
-    public void updateBudgetSpend(int budgetId, double actualSpend, double remainingBudget) {
-        executeUpdateQuery("update_budget_spend", stmt -> {
-            stmt.setDouble(1, actualSpend);
-            stmt.setDouble(2, remainingBudget);
-            stmt.setInt(3, budgetId);
-        });
-    }
-
-    public void updateBudget(Budget budget) {
-        executeUpdateQuery("update_budget", stmt -> {
-            stmt.setDouble(1, budget.getActual_spend());
-            stmt.setDouble(2, budget.getRemaining_budget());
-            stmt.setString(3, budget.getCategory());
-            stmt.setInt(4, budget.getCurrentUserId());
-        });
-    }
-
-    public Budget getBudgetByCategory(String category, int userId) {
-        List<Budget> budgets = executeQuery("select_budget_by_category_and_user", stmt -> {
-            stmt.setString(1, category);
-            stmt.setInt(2, userId);
-        }, rs -> {
-            String budgetCategory = rs.getString("category");
-            double budgetAmount = rs.getDouble("budget_amount");
-            double actualSpend = rs.getDouble("actual_spend");
-            double remainingBudget = rs.getDouble("remaining_budget");
-
-            Budget budget = new Budget(budgetCategory, budgetAmount, actualSpend, userId);
-            budget.setRemaining_budget(remainingBudget);
-            return budget;
-        });
-
-        return budgets.isEmpty() ? null : budgets.getFirst();
-    }
-
-    public void getBudgetsByUserId(int userId) {
-        List<Budget> budgets = executeQuery("select_budget_by_user_id", stmt -> {
-            stmt.setInt(1, userId);
-        }, rs -> {
-            String category = rs.getString("category");
-            double budgetAmount = rs.getDouble("budget_amount");
-            double actualSpend = rs.getDouble("actual_spend");
-            return new Budget(category, budgetAmount, actualSpend, userId);
-        });
-
-        for (Budget b : budgets) {
-            System.out.println("Category: " + b.getCategory() +
-                    ", Budget Amount: " + b.getAmount() +
-                    ", Actual Spend: " + b.getActual_spend() +
-                    ", Remaining Budget: " + b.getRemaining_budget());
-        }
     }
 }

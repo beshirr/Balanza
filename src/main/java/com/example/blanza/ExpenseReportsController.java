@@ -384,7 +384,8 @@ public class ExpenseReportsController {
         }
         
         // Sort payment methods by total amount (descending)
-        List<Map.Entry<String, Double>> sortedEntries = paymentTotals.entrySet().stream().sorted((Comparator<? super Map.Entry<String, Double>>) Map.Entry.<String, Float>comparingByValue().reversed())
+        List<Map.Entry<String, Double>> sortedEntries = paymentTotals.entrySet().stream().
+                sorted(Map.Entry.<String, Double>comparingByValue().reversed())
                 .collect(Collectors.toList());
         
         // Add to grid

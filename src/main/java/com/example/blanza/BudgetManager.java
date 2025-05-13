@@ -1,5 +1,7 @@
 package com.example.blanza;
 
+import java.util.List;
+
 public class BudgetManager extends FinancialEntityManager<Budget> {
     private final BudgetDB db = new BudgetDB();
     @Override
@@ -10,5 +12,10 @@ public class BudgetManager extends FinancialEntityManager<Budget> {
     @Override
     protected void saveToDatabase(Budget budget) {
         db.insertToDatabase(budget);
+    }
+
+    @Override
+    protected List<Budget> loadFromDatabase() {
+        return db.getAllFromDatabase();
     }
 }

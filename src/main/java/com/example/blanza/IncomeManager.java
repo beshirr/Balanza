@@ -1,5 +1,7 @@
 package com.example.blanza;
 
+import java.util.List;
+
 public class IncomeManager  extends FinancialEntityManager<Income> {
     private final IncomeDB db = new IncomeDB();
     @Override
@@ -10,5 +12,9 @@ public class IncomeManager  extends FinancialEntityManager<Income> {
     @Override
     protected void saveToDatabase(Income income) {
         db.insertToDatabase(income);
+    }
+    @Override
+    protected List<Income> loadFromDatabase() {
+        return db.getAllFromDatabase();
     }
 }

@@ -47,7 +47,7 @@ public class FinancialTaskDB extends Database<FinancialTask> {
             System.err.println("Error: Invalid user ID");
             return List.of();
         }
-        return executeQuery("select_all_financial_tasks", stmt -> {
+        return executeQuery("get_financial_task_by_id", stmt -> {
             stmt.setInt(1, currentUserId);
         }, rs -> {
             int id = rs.getInt("id");

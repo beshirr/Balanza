@@ -30,7 +30,8 @@ public class ExpenseDB extends Database<Expense> {
             double amount = rs.getDouble("amount");
             LocalDate date = LocalDate.parse(rs.getString("date"));
             String method = rs.getString("payment_method");
-            return new Expense(id, category, amount, date, method);
+            
+            return new Expense(currentUserId, category, amount, date, method);
         });
     }
 }
