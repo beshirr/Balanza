@@ -308,3 +308,77 @@
     -fx-background-radius: 8px;
     -fx-padding: 10px;
 }
+/* Dialog styles */
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 6, 0, 0, 2);
+    -fx-padding: 15px;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: -light-gray;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-padding: 15px;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color;
+}
+
+.dialog-pane > .content.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-color;
+    -fx-padding: 15px;
+}
+
+.dialog-pane .button-bar {
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-padding: 15px;
+}
+
+/* Custom expense list styles */
+.expense-item {
+    -fx-padding: 10px 15px;
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 2, 0, 0, 1);
+    -fx-margin: 0 0 8px 0;
+}
+
+.expense-category {
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 14px;
+}
+
+.expense-amount {
+    -fx-font-weight: bold;
+    -fx-text-fill: -accent-color;
+    -fx-font-size: 14px;
+}
+
+.expense-date {
+    -fx-text-fill: -dark-gray;
+    -fx-font-size: 12px;
+}
+
+.expense-list-header {
+    -fx-background-color: transparent;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -dark-gray;
+    -fx-padding: 5px 8px;
+    -fx-border-color: transparent transparent -medium-gray transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.empty-list-message {
+    -fx-text-fill: -dark-gray;
+    -fx-font-size: 14px;
+    -fx-padding: 20px;
+    -fx-text-alignment: center;
+}
