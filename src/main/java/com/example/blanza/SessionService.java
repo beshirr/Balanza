@@ -1,6 +1,6 @@
 package com.example.blanza;
 
-public class Session {
+public class SessionService {
     private static int currentUserId = -1;
 
     public static int getCurrentUserId() {

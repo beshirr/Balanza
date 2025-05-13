@@ -43,7 +43,7 @@ public class ReminderDB extends Database {
     public static List<Reminder> getAllReminders() {
         List<Reminder> reminders = new ArrayList<>();
         
-        int userId = Session.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         if (userId <= 0) {
             System.err.println("Error: Invalid user ID");
             return reminders;

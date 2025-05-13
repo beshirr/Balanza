@@ -112,7 +112,7 @@ public class ReminderController implements Initializable {
         // Create reminder object
         Integer taskId = selectedTask != null ? selectedTask.getId() : null;
         Reminder reminder = new Reminder(
-                Session.getCurrentUserId(),
+                SessionService.getCurrentUserId(),
                 title,
                 description,
                 dateTime,

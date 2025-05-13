@@ -23,7 +23,7 @@ public class ExpenseDB extends Database {
 
     public static List<Expense> getAllExpenses() {
         List<Expense> expenses = new ArrayList<>();
-        int userId = Session.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         if (userId <= 0) {
             System.err.println("Error: Invalid user ID");
             return expenses;
