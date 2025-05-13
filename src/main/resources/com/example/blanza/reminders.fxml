@@ -74,6 +74,10 @@
                         <TableColumn fx:id="timeColumn" text="Date &amp; Time" prefWidth="200"/>
                     </columns>
                 </TableView>
+                <Button text="Back to Home"
+                        fx:id="backButton"
+                        onAction="#handleBack"
+                        styleClass="navigation-button" />
             </VBox>
         </SplitPane>
     </center>
