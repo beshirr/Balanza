@@ -11,25 +11,71 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Alert?>
 <?import javafx.scene.control.Alert.AlertType?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
             fx:controller="com.example.blanza.IncomeTrackingController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="600.0" prefWidth="800.0"
+            styleClass="page-background"
+            stylesheets="@css/style.css">
 
-    <Label text="Income Source:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-    <TextField fx:id="sourceField" promptText="Enter income source"
-               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="20.0" prefWidth="200.0"/>
+    <!-- Main title -->
+    <Label text="Income Tracker" 
+           AnchorPane.topAnchor="30.0" 
+           AnchorPane.leftAnchor="50.0"
+           styleClass="page-title"/>
+           
+    <!-- Form area with adjusted positioning -->
+    <Label text="Income Source:" 
+           AnchorPane.topAnchor="120.0" 
+           AnchorPane.leftAnchor="200.0" 
+           styleClass="stat-label"/>
+           
+    <TextField fx:id="sourceField" 
+               promptText="Enter income source"
+               AnchorPane.topAnchor="120.0" 
+               AnchorPane.leftAnchor="350.0" 
+               prefWidth="250.0" 
+               styleClass="text-field"/>
 
-    <Label text="Income Amount:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="60.0"/>
-    <TextField fx:id="amountField" promptText="Enter income amount"
-               AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="60.0" prefWidth="200.0"/>
+    <Label text="Income Amount:" 
+           AnchorPane.topAnchor="170.0" 
+           AnchorPane.leftAnchor="200.0" 
+           styleClass="stat-label"/>
+           
+    <TextField fx:id="amountField" 
+               promptText="Enter income amount"
+               AnchorPane.topAnchor="170.0" 
+               AnchorPane.leftAnchor="350.0" 
+               prefWidth="250.0" 
+               styleClass="text-field"/>
 
-    <Button text="Save Income" fx:id="saveButton"
-            AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="100.0" onAction="#handleSaveIncome"/>
+    <!-- Buttons with better positioning -->
+    <Button text="Save Income" 
+            fx:id="saveButton"
+            AnchorPane.topAnchor="230.0" 
+            AnchorPane.leftAnchor="350.0" 
+            prefWidth="120.0"
+            onAction="#handleSaveIncome" 
+            styleClass="primary-button"/>
 
-    <Label fx:id="totalIncomeLabel" text="Total Income: 0.0"
-           AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="140.0"/>
+    <Button text="Back to Home" 
+            fx:id="backButton"
+            AnchorPane.topAnchor="230.0" 
+            AnchorPane.leftAnchor="480.0" 
+            prefWidth="120.0"
+            onAction="#handleBack" 
+            styleClass="navigation-button"/>
 
-    <Button text="Back to Home" fx:id="backButton"
-            AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="100.0" onAction="#handleBack"/>
+    <!-- Income display with better positioning -->
+    <Label text="Total Income:" 
+           AnchorPane.topAnchor="300.0" 
+           AnchorPane.leftAnchor="200.0"
+           styleClass="section-title"/>
+           
+    <Label fx:id="totalIncomeLabel" 
+           text="0.0"
+           AnchorPane.topAnchor="300.0" 
+           AnchorPane.leftAnchor="350.0" 
+           styleClass="card-value"/>
 </AnchorPane>

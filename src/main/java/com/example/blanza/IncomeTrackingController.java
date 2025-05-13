@@ -43,7 +43,7 @@ public class IncomeTrackingController {
             income.updateTotalIncome();
 
 
-            totalIncomeLabel.setText("Total Income: " + income.getTotalIncome());
+            totalIncomeLabel.setText("$" + income.getTotalIncome());
 
             sourceField.clear();
             amountField.clear();
