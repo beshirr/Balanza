@@ -57,10 +57,22 @@
                             styleClass="primary-button" />
                 </HBox>
                 
-                <!-- Expenses List -->
-                <ListView fx:id="expenseListView" 
-                         VBox.vgrow="ALWAYS" 
-                         styleClass="expense-list" />
+                <!-- Expenses List Section -->
+                <VBox spacing="10" VBox.vgrow="ALWAYS" styleClass="list-container">
+                    <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                    </padding>
+                    
+                    <HBox spacing="10" styleClass="list-header">
+                        <Label text="Recent Expenses" styleClass="sidebar-header" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="expenseCount" text="0 items" styleClass="timestamp-label" />
+                    </HBox>
+                    
+                    <ListView fx:id="expenseListView" 
+                             VBox.vgrow="ALWAYS" 
+                             styleClass="expense-list" />
+                </VBox>
             </VBox>
         </center>
         

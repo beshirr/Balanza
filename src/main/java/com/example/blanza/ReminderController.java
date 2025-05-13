@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -133,6 +134,10 @@ public class ReminderController implements Initializable {
         } else {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to save reminder. Please check your inputs.");
         }
+    }
+
+    public void handleBack(ActionEvent actionEvent) throws IOException {
+        SceneController.switchScene("home.fxml", "Balanza");
     }
     
     private void clearFields() {
