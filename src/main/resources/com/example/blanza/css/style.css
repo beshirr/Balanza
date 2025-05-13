@@ -1,4 +1,4 @@
-/* Global Styles */
+
 .root {
     -fx-font-family: "Segoe UI", Arial, sans-serif;
     -primary-color: #2e86de;
@@ -14,12 +14,12 @@
     -shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Page Background */
+
 .page-background {
     -fx-background-color: -light-gray;
 }
 
-/* Container Styles */
+
 .header-container {
     -fx-background-color: white;
     -fx-effect: dropshadow(gaussian, -shadow-color, 6, 0, 0, 2);
@@ -70,7 +70,7 @@
     -fx-border-width: 0 0 1 0;
 }
 
-/* Text Styles */
+
 .page-title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
@@ -125,7 +125,7 @@
     -fx-text-fill: -primary-color;
 }
 
-/* Button Styles */
+
 .primary-button {
     -fx-background-color: -primary-color;
     -fx-text-fill: white;
@@ -154,7 +154,7 @@
 }
 
 .logout-button {
-    -fx-background-color: #d9534f; /* Bootstrap-like red */
+    -fx-background-color: #d9534f;
     -fx-text-fill: white;
     -fx-border-color: #c9302c;
     -fx-border-radius: 5px;
@@ -195,7 +195,7 @@
     -fx-background-color: derive(-secondary-color, 20%);
 }
 
-/* List and Table Styles */
+
 .expense-list {
     -fx-background-color: transparent;
     -fx-background-radius: 5px;
@@ -219,7 +219,7 @@
     -fx-background-color: derive(-primary-color, 80%);
 }
 
-/* Filter Elements */
+
 .filter-dropdown {
     -fx-background-color: white;
     -fx-border-color: -medium-gray;
@@ -227,7 +227,7 @@
     -fx-background-radius: 4px;
 }
 
-/* Chart Styles */
+
 .chart {
     -fx-padding: 10px;
     -fx-background-color: white;
@@ -255,7 +255,7 @@
     -fx-background-color: -primary-color;
 }
 
-/* Form Styles */
+
 .text-field, .text-area, .combo-box, .date-picker {
     -fx-background-color: white;
     -fx-border-color: -medium-gray;
@@ -268,13 +268,13 @@
     -fx-border-color: -primary-color;
 }
 
-/* Separator */
+
 .section-divider {
     -fx-background-color: -medium-gray;
     -fx-opacity: 0.5;
 }
 
-/* Tooltips */
+
 .tooltip {
     -fx-background-color: #333333;
     -fx-text-fill: white;
@@ -283,7 +283,7 @@
     -fx-padding: 5px 8px;
 }
 
-/* Insights Labels */
+
 .insight-label {
     -fx-font-size: 14px;
     -fx-text-fill: -text-color;
@@ -293,14 +293,14 @@
     -fx-padding: 10px;
 }
 
-/* Last Updated Label */
+
 .timestamp-label {
     -fx-font-size: 12px;
     -fx-text-fill: -dark-gray;
     -fx-font-style: italic;
 }
 
-/* Responsive Grid */
+
 .stats-grid {
     -fx-hgap: 10px;
     -fx-vgap: 8px;
@@ -308,7 +308,7 @@
     -fx-background-radius: 8px;
     -fx-padding: 10px;
 }
-/* Dialog styles */
+
 .dialog-pane {
     -fx-background-color: white;
     -fx-background-radius: 8px;
@@ -340,7 +340,7 @@
     -fx-padding: 15px;
 }
 
-/* Custom expense list styles */
+
 .expense-item {
     -fx-padding: 10px 15px;
     -fx-background-color: white;

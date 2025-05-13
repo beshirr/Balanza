@@ -11,10 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,15 +21,45 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controller class for the expense reports view in the Balanza application.
+ * <p>
+ * This controller manages the expense reporting dashboard, which provides visual
+ * and statistical analysis of user expenses. The dashboard includes multiple charts,
+ * statistical breakdowns, and insights about spending patterns. Users can filter the
+ * data by different time periods and export reports to CSV format.
+ * <p>
+ * The controller utilizes JavaFX charts and controls to display:
+ * <ul>
+ *   <li>Pie charts for category and payment method distribution</li>
+ *   <li>Bar charts for monthly expense trends</li>
+ *   <li>Statistical summaries and key metrics</li>
+ *   <li>Data-driven insights about spending patterns</li>
+ * </ul>
+ */
 public class ExpenseReportsController {
+    /** The expense manager that provides access to expense data */
     private ExpenseManager expenseManager;
-    private DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMM yyyy");
+    
+    /** Formatter for displaying month and year in charts and reports */
+    private final DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMM yyyy");
 
+    /**
+     * Initializes the controller when the corresponding view is loaded.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Creates an instance of ExpenseManager to access expense data</li>
+     *   <li>Initializes the period selection dropdown with available time ranges</li>
+     *   <li>Sets the last updated timestamp</li>
+     *   <li>Loads the initial report data</li>
+     * </ul>
+     */
     @FXML
     private void initialize() {
         expenseManager = new ExpenseManager();
         
-        // Initialize the period combo box
+        
         periodComboBox.setItems(FXCollections.observableArrayList(
                 "Last Month", 
                 "Last 3 Months", 
@@ -42,24 +69,49 @@ public class ExpenseReportsController {
         ));
         periodComboBox.setValue("Last Month");
         
-        // Set current time for last updated
+        
         updateLastUpdatedTime();
         
-        // Load the report data
+        
         loadReportData();
     }
 
+    /**
+     * Refreshes the report data and updates the last updated timestamp.
+     * <p>
+     * This method is called when the user clicks the refresh button.
+     */
     @FXML
     private void handleRefresh() {
         updateLastUpdatedTime();
         loadReportData();
     }
 
+    /**
+     * Navigates back to the expense tracking screen.
+     * <p>
+     * This method is called when the user clicks the back button.
+     *
+     * @param actionEvent The event that triggered this handler
+     * @throws IOException If the scene switching fails
+     */
     @FXML
     private void handleBack(ActionEvent actionEvent) throws IOException {
         SceneController.switchScene("track_expenses.fxml", "Track Expenses");
     }
     
+    /**
+     * Exports the current expense report data to a CSV file.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Opens a file save dialog for the user to choose a location</li>
+     *   <li>Exports the filtered expense data to the selected file</li>
+     *   <li>Shows a success notification or error message</li>
+     * </ul>
+     *
+     * @param actionEvent The event that triggered this handler
+     */
     @FXML
     private void handleExport(ActionEvent actionEvent) {
         try {
@@ -90,17 +142,29 @@ public class ExpenseReportsController {
         }
     }
 
+    /**
+     * Updates the last updated timestamp label with the current time.
+     */
     private void updateLastUpdatedTime() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy 'at' h:mm a");
         lastUpdatedLabel.setText(LocalDateTime.now().format(timeFormatter));
     }
 
+    /**
+     * Exports a list of expenses to a CSV file.
+     * <p>
+     * The CSV includes columns for date, category, amount, and payment method.
+     *
+     * @param file The destination file
+     * @param expenses The list of expenses to export
+     * @throws IOException If an I/O error occurs while writing to the file
+     */
     private void exportToCSV(File file, List<Expense> expenses) throws IOException {
         try (FileWriter writer = new FileWriter(file)) {
-            // Write header
+            
             writer.write("Date,Category,Amount,Payment Method\n");
             
-            // Write data
+            
             for (Expense expense : expenses) {
                 writer.write(String.format("%s,%s,%.2f,%s\n",
                         expense.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE),
@@ -111,44 +175,69 @@ public class ExpenseReportsController {
         }
     }
 
+    /**
+     * Loads all report data based on the selected time period.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Gets filtered expenses based on the selected period</li>
+     *   <li>Updates all statistical summaries and metrics</li>
+     *   <li>Populates all charts with the filtered data</li>
+     *   <li>Generates data-driven insights about spending patterns</li>
+     * </ul>
+     */
     private void loadReportData() {
         List<Expense> filteredExpenses = getFilteredExpenses();
         
-        // Update the total
+        
         float total = calculateTotal(filteredExpenses);
         totalExpensesLabel.setText(String.format("$%.2f", total));
         
-        // Update transaction count
+        
         transactionCountLabel.setText(String.valueOf(filteredExpenses.size()));
         
-        // Update average transaction
+        
         float avgTransaction = filteredExpenses.isEmpty() ? 0 : total / filteredExpenses.size();
         avgTransactionLabel.setText(String.format("$%.2f", avgTransaction));
         
-        // Load the pie chart data for categories
+        
         loadCategoryPieChart(filteredExpenses);
         
-        // Load the pie chart data for payment methods
+        
         loadPaymentMethodPieChart(filteredExpenses);
         
-        // Load the bar chart data for monthly expenses
+        
         loadMonthlyBarChart(filteredExpenses);
         
-        // Load category stats grid
+        
         loadCategoryStatsGrid(filteredExpenses);
         
-        // Load payment method stats grid
+        
         loadPaymentMethodStatsGrid(filteredExpenses);
         
-        // Generate insights
+        
         generateInsights(filteredExpenses);
     }
 
+    /**
+     * Gets expenses filtered by the selected time period.
+     * <p>
+     * The time periods available are:
+     * <ul>
+     *   <li>Last Month - expenses from the past 30 days</li>
+     *   <li>Last 3 Months - expenses from the past 90 days</li>
+     *   <li>Last 6 Months - expenses from the past 180 days</li>
+     *   <li>This Year - expenses from January 1st of the current year</li>
+     *   <li>All Time - all recorded expenses</li>
+     * </ul>
+     *
+     * @return A filtered list of expenses based on the selected time period
+     */
     private List<Expense> getFilteredExpenses() {
         String selectedPeriod = periodComboBox.getValue();
         LocalDate startDate = LocalDate.now();
         
-        // Determine the start date based on selected period
+        
         switch (selectedPeriod) {
             case "Last Month":
                 startDate = startDate.minusMonths(1);
@@ -163,33 +252,51 @@ public class ExpenseReportsController {
                 startDate = LocalDate.of(startDate.getYear(), 1, 1);
                 break;
             case "All Time":
-                startDate = LocalDate.of(2000, 1, 1); // Far in the past
+                startDate = LocalDate.of(2000, 1, 1); 
                 break;
         }
         
-        // Filter expenses by date
+        
         LocalDate finalStartDate = startDate;
         return expenseManager.getAll().stream()
                 .filter(expense -> expense.getDate().isAfter(finalStartDate) || expense.getDate().isEqual(finalStartDate))
                 .collect(Collectors.toList());
     }
     
+    /**
+     * Calculates the total amount of all expenses in the provided list.
+     *
+     * @param expenses The list of expenses to calculate the total for
+     * @return The total amount as a float
+     */
     private float calculateTotal(List<Expense> expenses) {
         return (float) expenses.stream()
                 .mapToDouble(Expense::getAmount)
                 .sum();
     }
 
+    /**
+     * Loads the category pie chart with data from the filtered expenses.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Calculates the total amount spent per category</li>
+     *   <li>Creates pie chart segments for each category</li>
+     *   <li>Adds interactive labels and tooltips to the chart</li>
+     * </ul>
+     *
+     * @param expenses The filtered list of expenses to display in the chart
+     */
     private void loadCategoryPieChart(List<Expense> expenses) {
         Map<String, Double> categoryTotals = new HashMap<>();
         
-        // Calculate totals by category
+        
         for (Expense expense : expenses) {
             String category = expense.getCategory();
             categoryTotals.put(category, categoryTotals.getOrDefault(category, 0d) + expense.getAmount());
         }
         
-        // Create pie chart data
+        
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Map.Entry<String, Double> entry : categoryTotals.entrySet()) {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
@@ -198,20 +305,32 @@ public class ExpenseReportsController {
         categoryPieChart.setData(pieChartData);
         categoryPieChart.setTitle("Expenses by Category");
         
-        // Add labels to pie chart segments
+        
         addPieChartLabels(pieChartData);
     }
 
+    /**
+     * Loads the payment method pie chart with data from the filtered expenses.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Calculates the total amount spent per payment method</li>
+     *   <li>Creates pie chart segments for each payment method</li>
+     *   <li>Adds interactive labels and tooltips to the chart</li>
+     * </ul>
+     *
+     * @param expenses The filtered list of expenses to display in the chart
+     */
     private void loadPaymentMethodPieChart(List<Expense> expenses) {
         Map<String, Double> paymentMethodTotals = new HashMap<>();
         
-        // Calculate totals by payment method
+        
         for (Expense expense : expenses) {
             String paymentMethod = expense.getPaymentMethod();
             paymentMethodTotals.put(paymentMethod, paymentMethodTotals.getOrDefault(paymentMethod, 0d) + expense.getAmount());
         }
         
-        // Create pie chart data
+        
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Map.Entry<String, Double> entry : paymentMethodTotals.entrySet()) {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
@@ -220,46 +339,71 @@ public class ExpenseReportsController {
         paymentMethodPieChart.setData(pieChartData);
         paymentMethodPieChart.setTitle("Expenses by Payment Method");
         
-        // Add labels to pie chart segments
+        
         addPieChartLabels(pieChartData);
     }
     
+    /**
+     * Adds interactive labels and tooltips to pie chart segments.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Calculates percentage values for each segment</li>
+     *   <li>Creates tooltips showing the name, value, and percentage</li>
+     *   <li>Adds hover effects for better user feedback</li>
+     * </ul>
+     *
+     * @param pieChartData The data for the pie chart
+     */
     private void addPieChartLabels(ObservableList<PieChart.Data> pieChartData) {
-        // Calculate the total for percentage calculations
+        
         double total = pieChartData.stream()
                 .mapToDouble(PieChart.Data::getPieValue)
                 .sum();
                 
-        // Add listeners to show value and percentage when hovering over chart segments
+        
         pieChartData.forEach(data -> {
             String percentage = String.format("%.1f%%", (data.getPieValue() / total * 100));
             String value = String.format("$%.2f", data.getPieValue());
             
-            // Create tooltip with name, value and percentage
+            
             javafx.scene.control.Tooltip tooltip = new javafx.scene.control.Tooltip(
                 data.getName() + "\n" + value + " (" + percentage + ")");
             javafx.scene.control.Tooltip.install(data.getNode(), tooltip);
             
-            // Change appearance on hover for better user feedback
+            
             data.getNode().setOnMouseEntered(e -> data.getNode().setStyle("-fx-opacity: 0.8;"));
             data.getNode().setOnMouseExited(e -> data.getNode().setStyle("-fx-opacity: 1;"));
         });
     }
     
+    /**
+     * Loads the monthly bar chart with data from the filtered expenses.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Calculates the total amount spent per month</li>
+     *   <li>Creates bar chart columns for each month</li>
+     *   <li>Sorts months chronologically</li>
+     *   <li>Updates monthly statistics (average, highest, lowest)</li>
+     * </ul>
+     *
+     * @param expenses The filtered list of expenses to display in the chart
+     */
     private void loadMonthlyBarChart(List<Expense> expenses) {
         Map<String, Double> monthlyTotals = new HashMap<>();
         
-        // Calculate totals by month
+        
         for (Expense expense : expenses) {
             String monthYear = expense.getDate().format(monthFormatter);
             monthlyTotals.put(monthYear, monthlyTotals.getOrDefault(monthYear, 0d) + expense.getAmount());
         }
         
-        // Create bar chart data
+        
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Monthly Expenses");
         
-        // Sort keys by date
+        
         List<String> sortedMonths = monthlyTotals.keySet().stream()
                 .sorted((m1, m2) -> {
                     try {
@@ -278,10 +422,16 @@ public class ExpenseReportsController {
         monthlyBarChart.getData().clear();
         monthlyBarChart.getData().add(series);
         
-        // Update monthly statistics
+        
         updateMonthlyStatistics(monthlyTotals, sortedMonths);
     }
     
+    /**
+     * Updates the monthly statistics labels with average, highest, and lowest spending months.
+     *
+     * @param monthlyTotals Map of month names to total amounts
+     * @param sortedMonths List of months sorted chronologically
+     */
     private void updateMonthlyStatistics(Map<String, Double> monthlyTotals, List<String> sortedMonths) {
         if (monthlyTotals.isEmpty()) {
             monthlyAverageLabel.setText("$0.00");
@@ -290,14 +440,14 @@ public class ExpenseReportsController {
             return;
         }
         
-        // Calculate average
+        
         double average = (double) monthlyTotals.values().stream()
                 .mapToDouble(Double::doubleValue)
                 .average()
                 .orElse(0.0);
         monthlyAverageLabel.setText(String.format("$%.2f", average));
         
-        // Find highest month
+        
         Map.Entry<String, Double> highestEntry = null;
         for (String month : sortedMonths) {
             if (highestEntry == null || monthlyTotals.get(month) > highestEntry.getValue()) {
@@ -309,7 +459,7 @@ public class ExpenseReportsController {
             highestMonthLabel.setText(highestEntry.getKey() + ": " + String.format("$%.2f", highestEntry.getValue()));
         }
         
-        // Find lowest month
+        
         Map.Entry<String, Double> lowestEntry = null;
         for (String month : sortedMonths) {
             if (lowestEntry == null || monthlyTotals.get(month) < lowestEntry.getValue()) {
@@ -322,8 +472,20 @@ public class ExpenseReportsController {
         }
     }
     
+    /**
+     * Loads the category statistics grid with data from the filtered expenses.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Calculates total amount spent per category</li>
+     *   <li>Sorts categories by total amount (descending)</li>
+     *   <li>Displays top categories with amounts and percentages</li>
+     * </ul>
+     *
+     * @param expenses The filtered list of expenses to analyze
+     */
     private void loadCategoryStatsGrid(List<Expense> expenses) {
-        // Clear the grid
+        
         categoryStatsGrid.getChildren().clear();
         
         if (expenses.isEmpty()) {
@@ -332,20 +494,20 @@ public class ExpenseReportsController {
             return;
         }
         
-        // Calculate category totals
+        
         Map<String, Double> categoryTotals = new HashMap<>();
         for (Expense expense : expenses) {
             String category = expense.getCategory();
             categoryTotals.put(category, categoryTotals.getOrDefault(category, 0d) + expense.getAmount());
         }
         
-        // Sort categories by total amount (descending)
+        
         List<Map.Entry<String, Double>> sortedEntries = categoryTotals.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
                 .limit(5)
                 .toList();
         
-        // Add to grid
+        
         float total = calculateTotal(expenses);
         int row = 0;
         for (Map.Entry<String, Double> entry : sortedEntries) {
@@ -366,8 +528,20 @@ public class ExpenseReportsController {
         }
     }
     
+    /**
+     * Loads the payment method statistics grid with data from the filtered expenses.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Calculates total amount spent per payment method</li>
+     *   <li>Sorts payment methods by total amount (descending)</li>
+     *   <li>Displays all payment methods with amounts and percentages</li>
+     * </ul>
+     *
+     * @param expenses The filtered list of expenses to analyze
+     */
     private void loadPaymentMethodStatsGrid(List<Expense> expenses) {
-        // Clear the grid
+        
         paymentStatsGrid.getChildren().clear();
         
         if (expenses.isEmpty()) {
@@ -376,19 +550,19 @@ public class ExpenseReportsController {
             return;
         }
         
-        // Calculate payment method totals
+        
         Map<String, Double> paymentTotals = new HashMap<>();
         for (Expense expense : expenses) {
             String paymentMethod = expense.getPaymentMethod();
             paymentTotals.put(paymentMethod, paymentTotals.getOrDefault(paymentMethod, 0d) + expense.getAmount());
         }
         
-        // Sort payment methods by total amount (descending)
+        
         List<Map.Entry<String, Double>> sortedEntries = paymentTotals.entrySet().stream().
                 sorted(Map.Entry.<String, Double>comparingByValue().reversed())
                 .collect(Collectors.toList());
         
-        // Add to grid
+        
         double total = calculateTotal(expenses);
         int row = 0;
         for (Map.Entry<String, Double> entry : sortedEntries) {
@@ -409,6 +583,19 @@ public class ExpenseReportsController {
         }
     }
     
+    /**
+     * Generates data-driven insights about spending patterns.
+     * <p>
+     * This method:
+     * <ul>
+     *   <li>Analyzes category distributions and identifies top categories</li>
+     *   <li>Examines payment method usage and preferences</li>
+     *   <li>Identifies trends and patterns when sufficient data is available</li>
+     *   <li>Generates user-friendly insights as text</li>
+     * </ul>
+     *
+     * @param expenses The filtered list of expenses to analyze
+     */
     private void generateInsights(List<Expense> expenses) {
         if (expenses.isEmpty()) {
             categoryInsightsLabel.setText("No expense data available for the selected period.");
@@ -416,14 +603,14 @@ public class ExpenseReportsController {
             return;
         }
         
-        // Generate category insights
+        
         Map<String, Double> categoryTotals = new HashMap<>();
         for (Expense expense : expenses) {
             categoryTotals.put(expense.getCategory(), 
                 categoryTotals.getOrDefault(expense.getCategory(), 0d) + expense.getAmount());
         }
         
-        // Find highest category
+        
         Map.Entry<String, Double> highestCategory = categoryTotals.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
@@ -437,7 +624,7 @@ public class ExpenseReportsController {
                 highestCategory.getKey(), highestCategory.getValue()));
             insight.append(String.format("representing %.1f%% of your total spending. ", percentage));
             
-            // Add trend if we have enough data points
+            
             if (expenses.size() > 10) {
                 LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
                 
@@ -466,7 +653,7 @@ public class ExpenseReportsController {
             categoryInsightsLabel.setText("No category insights available.");
         }
         
-        // Generate payment method insights
+        
         Map<String, Double> paymentTotals = new HashMap<>();
         Map<String, Integer> paymentCounts = new HashMap<>();
         
@@ -476,12 +663,12 @@ public class ExpenseReportsController {
             paymentCounts.put(method, paymentCounts.getOrDefault(method, 0) + 1);
         }
         
-        // Find most used payment method (by count)
+        
         Map.Entry<String, Integer> mostUsedMethod = paymentCounts.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
                 
-        // Find highest payment method (by amount)
+        
         Map.Entry<String, Double> highestPaymentMethod = paymentTotals.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
@@ -507,19 +694,48 @@ public class ExpenseReportsController {
         }
     }
 
+    /** Pie chart showing expense distribution by category */
     @FXML private PieChart categoryPieChart;
+    
+    /** Pie chart showing expense distribution by payment method */
     @FXML private PieChart paymentMethodPieChart;
+    
+    /** Bar chart showing expense trends by month */
     @FXML private BarChart<String, Number> monthlyBarChart;
+    
+    /** Dropdown for selecting the time period for the report */
     @FXML private ComboBox<String> periodComboBox;
+    
+    /** Label displaying the total expenses for the selected period */
     @FXML private Label totalExpensesLabel;
+    
+    /** Label displaying when the report was last updated */
     @FXML private Label lastUpdatedLabel;
+    
+    /** Label displaying insights about spending categories */
     @FXML private Label categoryInsightsLabel;
+    
+    /** Label displaying insights about payment methods */
     @FXML private Label paymentInsightsLabel;
+    
+    /** Grid for displaying category statistics */
     @FXML private GridPane categoryStatsGrid;
+    
+    /** Grid for displaying payment method statistics */
     @FXML private GridPane paymentStatsGrid;
+    
+    /** Label displaying the monthly average spending */
     @FXML private Label monthlyAverageLabel;
+    
+    /** Label displaying the highest spending month and amount */
     @FXML private Label highestMonthLabel;
+    
+    /** Label displaying the lowest spending month and amount */
     @FXML private Label lowestMonthLabel;
+    
+    /** Label displaying the total number of transactions */
     @FXML private Label transactionCountLabel;
+    
+    /** Label displaying the average transaction amount */
     @FXML private Label avgTransactionLabel;
 }

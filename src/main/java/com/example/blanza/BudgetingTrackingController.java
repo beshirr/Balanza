@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -14,19 +13,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class BudgetingTrackingController {
-    // Database connections
     private final BudgetDB budgetDB;
     private final ExpenseDB expenseDB;
-
-    // Fields for the form
-    @FXML private VBox budgetsVBox;
-    @FXML private ComboBox<String> categoryComboBox;
-    @FXML private TextField budgetAmountField;
-    @FXML private Label remainingBudgetLabel;
-
-    // Properties for storing application state
-    private List<Budget> currentBudgets;
-    private Budget selectedBudget;
 
     /**
      * Default constructor required by JavaFX
@@ -41,13 +29,13 @@ public class BudgetingTrackingController {
      */
     @FXML
     public void initialize() {
-        // Load categories into combo box
+        
         setupCategoryComboBox();
 
-        // Load and display existing budgets
+        
         refreshBudgets();
 
-        // Initialize labels
+        
         remainingBudgetLabel.setText("");
     }
 
@@ -67,28 +55,28 @@ public class BudgetingTrackingController {
     private List<String> getAvailableCategories() {
         Set<String> categories = new HashSet<>();
 
-        // Add standard categories
+        
         categories.addAll(Arrays.asList(
                 "Food", "Housing", "Transportation", "Utilities",
                 "Entertainment", "Healthcare", "Education",
                 "Shopping", "Personal Care", "Travel", "Other"
         ));
 
-        // Add categories from existing expenses
+        
         for (Expense expense : expenseDB.getAllFromDatabase()) {
             if (expense.getCategory() != null && !expense.getCategory().isEmpty()) {
                 categories.add(expense.getCategory());
             }
         }
 
-        // Add categories from existing budgets
+        
         for (Budget budget : budgetDB.getAllFromDatabase()) {
             if (budget.getCategory() != null && !budget.getCategory().isEmpty()) {
                 categories.add(budget.getCategory());
             }
         }
 
-        // Sort categories
+        
         List<String> sortedCategories = new ArrayList<>(categories);
         Collections.sort(sortedCategories);
 
@@ -99,13 +87,13 @@ public class BudgetingTrackingController {
      * Refresh the budget list from the database and display it
      */
     private void refreshBudgets() {
-        // Clear existing display
+        
         budgetsVBox.getChildren().clear();
 
-        // Get current user's budgets from database
-        currentBudgets = budgetDB.getAllFromDatabase();
 
-        // Show message if no budgets exist
+        List<Budget> currentBudgets = budgetDB.getAllFromDatabase();
+
+        
         if (currentBudgets.isEmpty()) {
             Label noDataLabel = new Label("No budgets found. Create your first budget above.");
             noDataLabel.getStyleClass().add("info-message");
@@ -113,10 +101,10 @@ public class BudgetingTrackingController {
             return;
         }
 
-        // Create header
+        
         budgetsVBox.getChildren().add(createHeader());
 
-        // Add each budget
+        
         for (Budget budget : currentBudgets) {
             budgetsVBox.getChildren().add(createBudgetRow(budget));
         }
@@ -165,7 +153,7 @@ public class BudgetingTrackingController {
         Label budgetLabel = new Label(String.format("$%.2f", budget.getAmount()));
         Label spentLabel = new Label(String.format("$%.2f", budget.getActual_spend()));
 
-        // Create remaining budget label with color coding
+        
         Label remainingLabel = new Label(String.format("$%.2f", budget.getRemaining_budget()));
         double remaining = budget.getRemaining_budget();
         if (remaining < 0) {
@@ -176,22 +164,22 @@ public class BudgetingTrackingController {
             remainingLabel.setTextFill(Color.GREEN);
         }
 
-        // Create action buttons
+        
         Button editButton = new Button("Edit");
         Button updateSpendButton = new Button("Update Spend");
 
         editButton.getStyleClass().add("small-button");
         updateSpendButton.getStyleClass().add("small-button");
 
-        // Set up button actions
+        
         editButton.setOnAction(e -> showEditBudgetDialog(budget));
         updateSpendButton.setOnAction(e -> showUpdateSpendDialog(budget));
 
-        // Create layout for buttons
+        
         HBox actionButtons = new HBox(5);
         actionButtons.getChildren().addAll(editButton, updateSpendButton);
 
-        // Set widths for consistent layout
+        
         categoryLabel.setPrefWidth(150);
         budgetLabel.setPrefWidth(120);
         spentLabel.setPrefWidth(120);
@@ -211,7 +199,7 @@ public class BudgetingTrackingController {
         String category = categoryComboBox.getValue();
         String amountText = budgetAmountField.getText();
 
-        // Validate fields
+        
         if (category == null || category.trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Error", "Please select or enter a category");
             return;
@@ -223,7 +211,7 @@ public class BudgetingTrackingController {
         }
 
         try {
-            // Parse budget amount
+            
             double amount = Double.parseDouble(amountText);
 
             if (amount <= 0) {
@@ -231,7 +219,7 @@ public class BudgetingTrackingController {
                 return;
             }
 
-            // Check if budget already exists for this category
+            
             Budget existingBudget = budgetDB.getBudgetByCategory(category, SessionService.getCurrentUserId());
             if (existingBudget != null) {
                 showAlert(Alert.AlertType.ERROR, "Error",
@@ -239,17 +227,17 @@ public class BudgetingTrackingController {
                 return;
             }
 
-            // Create and save new budget
+            
             Budget newBudget = new Budget(category, amount, 0.0, SessionService.getCurrentUserId());
             newBudget.updateRemainingBudget();
 
             budgetDB.insertToDatabase(newBudget);
 
-            // Reset form
+            
             categoryComboBox.setValue(null);
             budgetAmountField.clear();
 
-            // Refresh display
+            
             refreshBudgets();
 
             showAlert(Alert.AlertType.INFORMATION, "Success", "Budget created successfully");
@@ -263,16 +251,16 @@ public class BudgetingTrackingController {
      * Show dialog to edit an existing budget
      */
     private void showEditBudgetDialog(Budget budget) {
-        // Create a dialog
+        
         Dialog<Budget> dialog = new Dialog<>();
         dialog.setTitle("Edit Budget");
         dialog.setHeaderText("Edit Budget for " + budget.getCategory());
 
-        // Set button types
+        
         ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
-        // Create form fields
+        
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -285,10 +273,10 @@ public class BudgetingTrackingController {
 
         dialog.getDialogPane().setContent(grid);
 
-        // Request focus on the amount field
+        
         amountField.requestFocus();
 
-        // Convert the result when the save button is clicked
+        
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 try {
@@ -309,13 +297,13 @@ public class BudgetingTrackingController {
             return null;
         });
 
-        // Show the dialog and process the result
+        
         Optional<Budget> result = dialog.showAndWait();
 
         result.ifPresent(updatedBudget -> {
-            // Save to database
+            
             budgetDB.updateBudget(updatedBudget);
-            // Refresh display
+            
             refreshBudgets();
         });
     }
@@ -324,16 +312,16 @@ public class BudgetingTrackingController {
      * Show dialog to update spending for a budget
      */
     private void showUpdateSpendDialog(Budget budget) {
-        // Create a dialog
+        
         Dialog<Budget> dialog = new Dialog<>();
         dialog.setTitle("Update Spending");
         dialog.setHeaderText("Update Spending for " + budget.getCategory());
 
-        // Set button types
+        
         ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
-        // Create form fields
+        
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -350,10 +338,10 @@ public class BudgetingTrackingController {
 
         dialog.getDialogPane().setContent(grid);
 
-        // Request focus on the spend field
+        
         spendField.requestFocus();
 
-        // Convert the result when the save button is clicked
+        
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 try {
@@ -374,13 +362,13 @@ public class BudgetingTrackingController {
             return null;
         });
 
-        // Show the dialog and process the result
+        
         Optional<Budget> result = dialog.showAndWait();
 
         result.ifPresent(updatedBudget -> {
-            // Save to database
+            
             budgetDB.updateBudget(updatedBudget);
-            // Refresh display
+            
             refreshBudgets();
         });
     }
@@ -403,4 +391,9 @@ public class BudgetingTrackingController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    @FXML private VBox budgetsVBox;
+    @FXML private ComboBox<String> categoryComboBox;
+    @FXML private TextField budgetAmountField;
+    @FXML private Label remainingBudgetLabel;
 }

@@ -2,22 +2,47 @@ package com.example.blanza;
 
 import java.util.List;
 
+/**
+ * BudgetDB is a database access class for managing Budget entities.
+ * It provides methods to insert, retrieve, and update budget records
+ * associated with users in the application.
+ *
+ * This class extends the generic Database class, providing
+ * Budget-specific implementations for CRUD operations.
+ *
+ * Usage:
+ * - Insert a new budget for a user
+ * - Retrieve all budgets for the current user
+ * - Retrieve a budget by category and user
+ * - Update an existing budget
+ *
+ * SQL queries are referenced by name and are expected to be defined
+ * in the underlying Database class or configuration.
+ */
 public class BudgetDB extends Database<Budget> {
 
+    /**
+     * Inserts a new Budget record into the database.
+     * The parameters are set in the order expected by the SQL statement.
+     *
+     * @param budget The Budget object to insert.
+     */
     @Override
     public void insertToDatabase(Budget budget) {
         executeUpdateQuery("insert_budget", (stmt) -> {
-            // Make sure parameters are in the correct order as defined in the SQL
-            stmt.setInt(1, budget.getCurrentUserId());         // user_id
-            stmt.setString(2, budget.getCategory());    // category
-            stmt.setDouble(3, budget.getAmount());      // budget_amount
-            stmt.setDouble(4, budget.getActual_spend()); // actual_spend
-            stmt.setDouble(5, budget.getRemaining_budget()); // remaining_budget
+            
+            stmt.setInt(1, budget.getCurrentUserId());         
+            stmt.setString(2, budget.getCategory());    
+            stmt.setDouble(3, budget.getAmount());      
+            stmt.setDouble(4, budget.getActual_spend()); 
+            stmt.setDouble(5, budget.getRemaining_budget()); 
         });
     }
 
     /**
-     * Get all budgets for the current user
+     * Retrieves all Budget records for the current user from the database.
+     *
+     * @return List of Budget objects for the current user.
      */
     @Override
     public List<Budget> getAllFromDatabase() {
@@ -40,10 +65,11 @@ public class BudgetDB extends Database<Budget> {
     }
 
     /**
-     * Get a budget by category for the current user
-     * @param category Budget category
-     * @param userId User ID
-     * @return Budget or null if not found
+     * Retrieves a Budget record by category for a specific user.
+     *
+     * @param category The budget category to search for.
+     * @param userId The user ID associated with the budget.
+     * @return The Budget object if found, or null if not found.
      */
     public Budget getBudgetByCategory(String category, int userId) {
         List<Budget> budgets = executeQuery("select_budget_by_category", stmt -> {
@@ -66,9 +92,9 @@ public class BudgetDB extends Database<Budget> {
     }
 
     /**
-     * Update an existing budget
-     * @param budget Budget to update
-     * @return true if successful
+     * Updates an existing Budget record in the database.
+     *
+     * @param budget The Budget object containing updated values.
      */
     public void updateBudget(Budget budget) {
         executeUpdateQuery("update_budget", stmt -> {
@@ -77,7 +103,7 @@ public class BudgetDB extends Database<Budget> {
             stmt.setDouble(3, budget.getActual_spend());
             stmt.setDouble(4, budget.getRemaining_budget());
             stmt.setInt(5, budget.getId());
-            stmt.setInt(6, budget.getCurrentUserId());;
+            stmt.setInt(6, budget.getCurrentUserId());
         });
     }
 }

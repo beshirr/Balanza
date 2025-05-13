@@ -14,7 +14,7 @@ public class ReminderManager {
     private boolean isRunning = false;
     private final ReminderDB db = new ReminderDB();
     private LocalDateTime lastRefreshTime = LocalDateTime.MIN;
-    private static final Duration REFRESH_INTERVAL = Duration.ofSeconds(30); // Refresh cache every 30 seconds
+    private static final Duration REFRESH_INTERVAL = Duration.ofSeconds(30); 
 
     public ReminderManager() {
         loadRemindersFromDatabase();
@@ -27,18 +27,18 @@ public class ReminderManager {
      * @return True if reminder was successfully created, false otherwise
      */
     public boolean addReminder(Reminder reminder) {
-        // Validate reminder data
+        
         if (!validateReminderData(reminder)) {
             return false;
         }
         
-        // Save to database first to get the generated ID
+        
         db.insertToDatabase(reminder);
         
-        // Set the generated ID
+        
         reminder.setId(reminder.getId());
         
-        // Add to queue
+        
         reminderQueue.add(reminder);
         
         return true;
@@ -48,12 +48,12 @@ public class ReminderManager {
      * Validates reminder data according to business rules
      */
     private boolean validateReminderData(Reminder reminder) {
-        // Title must be between 3 and 50 characters
+        
         if (reminder.getTitle() == null || reminder.getTitle().length() < 3 || reminder.getTitle().length() > 50) {
             return false;
         }
         
-        // Date must be in the future
+        
         return reminder.getTime() != null && !reminder.getTime().isBefore(LocalDateTime.now());
     }
     
@@ -72,7 +72,7 @@ public class ReminderManager {
      * Will refresh data from database if it hasn't been refreshed recently
      */
     public List<Reminder> getAllReminders() {
-        // Check if data needs to be refreshed from the database
+        
         if (Duration.between(lastRefreshTime, LocalDateTime.now()).compareTo(REFRESH_INTERVAL) > 0) {
             loadRemindersFromDatabase();
         }
@@ -85,7 +85,7 @@ public class ReminderManager {
     private void sendReminder() throws InterruptedException {
         while (isRunning) {
             try {
-                // Refresh data periodically
+                
                 if (Duration.between(lastRefreshTime, LocalDateTime.now()).compareTo(REFRESH_INTERVAL) > 0) {
                     loadRemindersFromDatabase();
                 }
@@ -97,16 +97,16 @@ public class ReminderManager {
 
                 Reminder nextReminder = reminderQueue.peek();
                 if (LocalDateTime.now().isAfter(nextReminder.getTime())) {
-                    // Send notification
+                    
                     sendNotification(nextReminder);
                     
-                    // Remove the reminder from the queue
+                    
                     reminderQueue.poll();
                 } else {
-                    // Sleep until the next reminder is due, but check at least every minute
+                    
                     long sleepTime = Math.min(
                         Duration.between(LocalDateTime.now(), nextReminder.getTime()).toMillis(),
-                        60000); // 1 minute
+                        60000); 
                     Thread.sleep(sleepTime);
                 }
             } catch (InterruptedException e) {
@@ -133,7 +133,7 @@ public class ReminderManager {
      */
     public void startReminderService() {
         if (reminderThread != null && reminderThread.isAlive()) {
-            return; // Already running
+            return; 
         }
         
         isRunning = true;
