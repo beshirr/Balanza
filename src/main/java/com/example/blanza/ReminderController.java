@@ -48,6 +48,7 @@ public class ReminderController implements Initializable {
     private ReminderManager reminderManager;
     private ObservableList<Reminder> remindersList = FXCollections.observableArrayList();
     private ObservableList<FinancialTask> financialTasksList = FXCollections.observableArrayList();
+    private FinancialTaskDB db = new FinancialTaskDB();
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,7 +80,7 @@ public class ReminderController implements Initializable {
     private void loadFinancialTasks() {
         // Clear and load financial tasks from database
         financialTasksList.clear();
-        List<FinancialTask> tasks = FinancialTaskDB.getAllFinancialTasks();
+        List<FinancialTask> tasks = db.getAllFromDatabase();
         financialTasksList.addAll(tasks);
         financialTaskComboBox.setItems(financialTasksList);
     }

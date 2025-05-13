@@ -2,20 +2,17 @@ package com.example.blanza;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Properties;
 
 public class ReminderManager {
     private final PriorityQueue<Reminder> reminderQueue = new PriorityQueue<>();
     private Thread reminderThread;
     private boolean isRunning = false;
+    private final ReminderDB db = new ReminderDB();
 
     public ReminderManager() {
         loadRemindersFromDatabase();
@@ -34,7 +31,7 @@ public class ReminderManager {
         }
         
         // Save to database first to get the generated ID
-        ReminderDB.insertReminder(reminder);
+        db.insertToDatabase(reminder);
         
         // Set the generated ID
         reminder.setId(reminder.getId());
@@ -63,7 +60,7 @@ public class ReminderManager {
      */
     private void loadRemindersFromDatabase() {
         reminderQueue.clear();
-        List<Reminder> reminders = ReminderDB.getAllReminders();
+        List<Reminder> reminders = db.getAllFromDatabase();
         reminderQueue.addAll(reminders);
     }
 

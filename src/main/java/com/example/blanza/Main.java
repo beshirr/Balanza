@@ -20,7 +20,6 @@ public class Main extends Application {
         } else {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
         }
-//        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("track_expenses.fxml")));
 
         SceneController.setStage(stage);
         stage.setTitle("BALANZA");

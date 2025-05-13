@@ -8,16 +8,15 @@ import java.util.List;
 /**
  * The type Reminder db.
  */
-public class ReminderDB extends Database {
+public class ReminderDB extends Database<Reminder> {
     /**
      * Insert reminder into database.
      *
      * @param reminder the reminder to insert
      */
-    public static void insertReminder(Reminder reminder) {
-        String sql = SQLLoader.get("insert_reminder");
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+    @Override
+    public void insertToDatabase(Reminder reminder) {
+        executeUpdateQuery("insert_reminder", (stmt -> {
             stmt.setInt(1, reminder.getCurrent_user_id());
             stmt.setString(2, reminder.getTitle());
             stmt.setString(3, reminder.getDescription());
@@ -27,12 +26,7 @@ public class ReminderDB extends Database {
             } else {
                 stmt.setNull(5, java.sql.Types.INTEGER);
             }
-            stmt.executeUpdate();
-
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        }));
     }
 
     /**
@@ -40,45 +34,28 @@ public class ReminderDB extends Database {
      *
      * @return list of reminders
      */
-    public static List<Reminder> getAllReminders() {
-        List<Reminder> reminders = new ArrayList<>();
-        
-        int userId = SessionService.getCurrentUserId();
-        if (userId <= 0) {
+    @Override
+    public List<Reminder> getAllFromDatabase() {
+        if (currentUserId <= 0) {
             System.err.println("Error: Invalid user ID");
-            return reminders;
+            return List.of();
         }
-        
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                String sql = SQLLoader.get("get_user_reminders");
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setInt(1, userId);
-                ResultSet rs = stmt.executeQuery();
-                
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String title = rs.getString("title");
-                    String description = rs.getString("description");
-                    LocalDateTime time = rs.getTimestamp("time").toLocalDateTime();
-                    
-                    // Get the associated financial task if exists
-                    Integer taskId = null;
-                    FinancialTask task = null;
-                    
-                    if (!rs.wasNull() && rs.getObject("task_id") != null) {
-                        taskId = rs.getInt("task_id");
-                        task = FinancialTaskDB.getFinancialTaskById(taskId);
-                    }
-                    
-                    Reminder reminder = new Reminder(id, userId, title, description, time, taskId, task);
-                    reminders.add(reminder);
-                }
+
+        return executeQuery("select_all_reminders", stmt -> {
+            stmt.setInt(1, currentUserId);
+        }, rs -> {
+            FinancialTaskDB db = new FinancialTaskDB();
+            int id = rs.getInt("id");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            LocalDateTime time = rs.getTimestamp("time").toLocalDateTime();
+            Integer taskId = null;
+            FinancialTask task = null;
+            if (!rs.wasNull() && rs.getObject("task_id") != null) {
+                taskId = rs.getInt("task_id");
+                task = db.getFinancialTaskById(taskId);
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return reminders;
+            return new Reminder(id, currentUserId, title, description, time, taskId, task);
+        });
     }
 }

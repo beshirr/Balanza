@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Database<T extends FinancialEntity> {
+public abstract class Database<T> {
     private final static Dotenv dotenv = Dotenv.configure().directory(".").load();
     protected final static String DB_URL = dotenv.get("DB_URL");
     protected final int currentUserId = SessionService.getCurrentUserId();

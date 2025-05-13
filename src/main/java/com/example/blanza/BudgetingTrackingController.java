@@ -1,57 +1,34 @@
 package com.example.blanza;
 
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BudgetingTrackingController {
+    private final BudgetDB db;
+    private Budget budget;
 
-
-    @FXML
-    private VBox budgetsVBox;  // VBox to hold and display all budgets
-
-
-
-    @FXML
-    private TextField categoryField;
-
-    @FXML
-    private TextField budgetAmountField;
-
-    @FXML
-    private Label remainingBudgetLabel;
-
-    @FXML
-    private TextField updateCategoryField;
-    @FXML
-    private TextField updateActualSpendField;
-
-    @FXML
-    private Label updateCategoryLabel;
-    @FXML
-    private Label updateActualSpendLabel;
-    @FXML
-    private Button updateBudgetButton;
-
-    private Budgeting budget;
+    public BudgetingTrackingController(BudgetDB db) {
+        this.db = db;
+    }
 
     // Initialize the Budgeting model
     public void initialize() {
         int userId = SessionService.getCurrentUserId();
-        budget = new Budgeting("", 0.0, 0.0, userId);
-
+        budget = new Budget("", 0.0, 0.0, userId);
+//        populateCategoryComboBox();
     }
 
     public void displayBudgetData(String category, double budgetAmount, double actualSpend, double remainingBudget) {
@@ -61,39 +38,11 @@ public class BudgetingTrackingController {
                         "Actual Spend: " + actualSpend + ", " +
                         "Remaining Budget: " + remainingBudget
         );
-        budgetsVBox.getChildren().add(budgetLabel);  // Add each Label to VBox
+        budgetsVBox.getChildren().add(budgetLabel);
     }
 
-
-    @FXML
-    public void handleSaveBudget() {
-        String category = categoryField.getText();
-        String budgetAmountText = budgetAmountField.getText();
-
-        try {
-
-            double budgetAmount = Double.parseDouble(budgetAmountText);
-            budget.setCategory(category);
-            budget.setBudgetAmount(budgetAmount);
-            budget.updateRemainingBudget();
-
-            BudgetDB.insertBudget(budget);
-
-
-//            remainingBudgetLabel.setText("Remaining Budget: " + budget.getRemaining_budget());
-
-
-            categoryField.clear();
-            budgetAmountField.clear();
-
-        } catch (NumberFormatException ex) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid budget amount entered.");
-            alert.show();
-        }
-    }
     public void handleDisplayBudgets() {
-            int userId = SessionService.getCurrentUserId();
+        int userId = SessionService.getCurrentUserId();
         budgetsVBox.getChildren().clear();
         String sql = SQLLoader.get("select_budget_by_user_id");  // Query: SELECT * FROM budgets WHERE user_id = ?
 
@@ -136,6 +85,35 @@ public class BudgetingTrackingController {
     public void handleBack(ActionEvent actionEvent) throws IOException {
         SceneController.switchScene("home.fxml", "Balanza");
     }
+
+    @FXML
+    public void handleSaveBudget() {
+        String category = categoryField.getText();
+        String budgetAmountText = budgetAmountField.getText();
+
+        try {
+
+            double budgetAmount = Double.parseDouble(budgetAmountText);
+            budget.setCategory(category);
+            budget.setAmount(budgetAmount);
+            budget.updateRemainingBudget();
+
+            db.insertToDatabase(budget);
+
+
+            remainingBudgetLabel.setText("Remaining Budget: " + budget.getRemaining_budget());
+
+
+//            categoryField.clear();
+            budgetAmountField.clear();
+
+        } catch (NumberFormatException ex) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid budget amount entered.");
+            alert.show();
+        }
+    }
+
     @FXML
     public void handleUpdateBudget() {
 
@@ -166,7 +144,7 @@ public class BudgetingTrackingController {
             double actualSpend = Double.parseDouble(actualSpendText);
 
 
-            Budgeting budget = BudgetDB.getBudgetByCategory(category, SessionService.getCurrentUserId());  // Modify this method to retrieve by category and user ID
+            Budget budget = db.getBudgetByCategory(category, SessionService.getCurrentUserId());  // Modify this method to retrieve by category and user ID
 
             if (budget == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "No budget found for this category.");
@@ -175,7 +153,7 @@ public class BudgetingTrackingController {
             }
 
 
-            if (actualSpend > budget.getBudgetAmount()) {
+            if (actualSpend > budget.getAmount()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Actual spend cannot exceed the budget amount.");
                 alert.show();
                 return;
@@ -185,8 +163,7 @@ public class BudgetingTrackingController {
             budget.setActual_spend(actualSpend);
             budget.updateRemainingBudget();
 
-
-            BudgetDB.updateBudget(budget);
+            db.updateBudget(budget);
 
 
             remainingBudgetLabel.setText("Remaining Budget: " + budget.getRemaining_budget());
@@ -205,4 +182,23 @@ public class BudgetingTrackingController {
         }
 
     }
+
+    @FXML
+    private VBox budgetsVBox;
+    @FXML
+    private TextField categoryField;
+    @FXML
+    private TextField budgetAmountField;
+    @FXML
+    private Label remainingBudgetLabel;
+    @FXML
+    private TextField updateCategoryField;
+    @FXML
+    private TextField updateActualSpendField;
+    @FXML
+    private Label updateCategoryLabel;
+    @FXML
+    private Label updateActualSpendLabel;
+    @FXML
+    private Button updateBudgetButton;
 }

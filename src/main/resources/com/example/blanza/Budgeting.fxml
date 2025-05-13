@@ -30,12 +30,13 @@
            AnchorPane.topAnchor="100.0"
            styleClass="stat-label"/>
            
-    <TextField fx:id="categoryField" 
+    <ComboBox fx:id="categoryField"
                promptText="Enter budget category"
                AnchorPane.leftAnchor="350.0" 
                AnchorPane.topAnchor="100.0" 
                prefWidth="250.0"
-               styleClass="text-field"/>
+               styleClass="text-field"
+                editable="true"/>
 
     <!-- Budget Amount Label and TextField -->
     <Label text="Budget Amount:" 

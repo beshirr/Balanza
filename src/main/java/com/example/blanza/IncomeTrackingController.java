@@ -25,7 +25,7 @@ public class IncomeTrackingController {
     public void initialize() {
         int userId = SessionService.getCurrentUserId();
         income = new Income(SessionService.getCurrentUserId(),"", 0.0, LocalDate.now());
-        income.setUser_id(userId);
+        income.setCurrentUserId(userId);
     }
 
 
@@ -37,12 +37,12 @@ public class IncomeTrackingController {
         try {
 
             double amount = Double.parseDouble(amountText);
-            income.setIncomeSource(source);
+            income.setIncome_source(source);
             income.setAmount(amount);
             income.updateTotalIncome();
 
 
-            totalIncomeLabel.setText("$" + income.getTotalIncome());
+            totalIncomeLabel.setText("$" + income.getTotal_income());
 
             sourceField.clear();
             amountField.clear();

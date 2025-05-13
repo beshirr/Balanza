@@ -8,7 +8,7 @@ public class Budget extends FinancialEntity {
     public Budget(String category, double amount, double actual_spend, int user_id) {
         super(user_id, amount);
         this.category = category;
-        this.actual_spend = 0.0;
+        this.actual_spend = actual_spend;
         this.remaining_budget = amount;
     }
 

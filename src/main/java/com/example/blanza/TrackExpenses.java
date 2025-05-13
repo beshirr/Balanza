@@ -1,5 +1,5 @@
 package com.example.blanza;
-
+// TODO: too many calls fot getAll expenses
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ public class TrackExpenses {
     private Label expenseCount;
 
     private void updateExpenseCount() {
-        int count = expenseManager.getExpenses().size();
+        int count = expenseManager.getAll().size();
         expenseCount.setText(count + (count == 1 ? " item" : " items"));
     }
 
@@ -215,7 +215,7 @@ public class TrackExpenses {
         categories.add("Healthcare");
         
         // Add categories from existing expenses
-        for (Expense expense : expenseManager.getExpenses()) {
+        for (Expense expense : expenseManager.getAll()) {
             categories.add(expense.getCategory());
         }
         
@@ -235,7 +235,7 @@ public class TrackExpenses {
         paymentMethods.add("Bank Transfer");
         
         // Add payment methods from existing expenses
-        for (Expense expense : expenseManager.getExpenses()) {
+        for (Expense expense : expenseManager.getAll()) {
             paymentMethods.add(expense.getPaymentMethod());
         }
         
@@ -248,7 +248,7 @@ public class TrackExpenses {
     }
 
     private void updateDashboard() {
-        expenses.setText("$" + expenseManager.getTotalExpenses());
+        expenses.setText("$" + expenseManager.getTotal());
     }
 
     private void loadExpenses() {
@@ -304,7 +304,7 @@ public class TrackExpenses {
         });
         
         // Add header to the list
-        if (expenseListView.getItems().isEmpty() && !expenseManager.getExpenses().isEmpty()) {
+        if (expenseListView.getItems().isEmpty() && !expenseManager.getAll().isEmpty()) {
             // Add a label at the top of the list as a header
             HBox headerContainer = new HBox(15);
             headerContainer.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
@@ -326,7 +326,7 @@ public class TrackExpenses {
         }
         
         // Add expense items
-        for (Expense expense : expenseManager.getExpenses()) {
+        for (Expense expense : expenseManager.getAll()) {
             expenseListView.getItems().add(expense.getCategory() + " - $" + expense.getAmount() + " - " + expense.getDate());
         }
         

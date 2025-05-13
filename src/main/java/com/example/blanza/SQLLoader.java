@@ -41,7 +41,6 @@ public class SQLLoader {
             reader.close();
         } catch (IOException e) {
             System.err.println("Error reading SQL queries: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     

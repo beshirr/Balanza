@@ -169,7 +169,7 @@ public class ExpenseReportsController {
         
         // Filter expenses by date
         LocalDate finalStartDate = startDate;
-        return expenseManager.getExpenses().stream()
+        return expenseManager.getAll().stream()
                 .filter(expense -> expense.getDate().isAfter(finalStartDate) || expense.getDate().isEqual(finalStartDate))
                 .collect(Collectors.toList());
     }
@@ -181,17 +181,17 @@ public class ExpenseReportsController {
     }
 
     private void loadCategoryPieChart(List<Expense> expenses) {
-        Map<String, Float> categoryTotals = new HashMap<>();
+        Map<String, Double> categoryTotals = new HashMap<>();
         
         // Calculate totals by category
         for (Expense expense : expenses) {
             String category = expense.getCategory();
-            categoryTotals.put(category, categoryTotals.getOrDefault(category, 0f) + expense.getAmount());
+            categoryTotals.put(category, categoryTotals.getOrDefault(category, 0d) + expense.getAmount());
         }
         
         // Create pie chart data
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for (Map.Entry<String, Float> entry : categoryTotals.entrySet()) {
+        for (Map.Entry<String, Double> entry : categoryTotals.entrySet()) {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
         }
         
@@ -203,17 +203,17 @@ public class ExpenseReportsController {
     }
 
     private void loadPaymentMethodPieChart(List<Expense> expenses) {
-        Map<String, Float> paymentMethodTotals = new HashMap<>();
+        Map<String, Double> paymentMethodTotals = new HashMap<>();
         
         // Calculate totals by payment method
         for (Expense expense : expenses) {
             String paymentMethod = expense.getPaymentMethod();
-            paymentMethodTotals.put(paymentMethod, paymentMethodTotals.getOrDefault(paymentMethod, 0f) + expense.getAmount());
+            paymentMethodTotals.put(paymentMethod, paymentMethodTotals.getOrDefault(paymentMethod, 0d) + expense.getAmount());
         }
         
         // Create pie chart data
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for (Map.Entry<String, Float> entry : paymentMethodTotals.entrySet()) {
+        for (Map.Entry<String, Double> entry : paymentMethodTotals.entrySet()) {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
         }
         
@@ -247,12 +247,12 @@ public class ExpenseReportsController {
     }
     
     private void loadMonthlyBarChart(List<Expense> expenses) {
-        Map<String, Float> monthlyTotals = new HashMap<>();
+        Map<String, Double> monthlyTotals = new HashMap<>();
         
         // Calculate totals by month
         for (Expense expense : expenses) {
             String monthYear = expense.getDate().format(monthFormatter);
-            monthlyTotals.put(monthYear, monthlyTotals.getOrDefault(monthYear, 0f) + expense.getAmount());
+            monthlyTotals.put(monthYear, monthlyTotals.getOrDefault(monthYear, 0d) + expense.getAmount());
         }
         
         // Create bar chart data
@@ -282,7 +282,7 @@ public class ExpenseReportsController {
         updateMonthlyStatistics(monthlyTotals, sortedMonths);
     }
     
-    private void updateMonthlyStatistics(Map<String, Float> monthlyTotals, List<String> sortedMonths) {
+    private void updateMonthlyStatistics(Map<String, Double> monthlyTotals, List<String> sortedMonths) {
         if (monthlyTotals.isEmpty()) {
             monthlyAverageLabel.setText("$0.00");
             highestMonthLabel.setText("N/A");
@@ -291,14 +291,14 @@ public class ExpenseReportsController {
         }
         
         // Calculate average
-        float average = (float) monthlyTotals.values().stream()
-                .mapToDouble(Float::doubleValue)
+        double average = (double) monthlyTotals.values().stream()
+                .mapToDouble(Double::doubleValue)
                 .average()
                 .orElse(0.0);
         monthlyAverageLabel.setText(String.format("$%.2f", average));
         
         // Find highest month
-        Map.Entry<String, Float> highestEntry = null;
+        Map.Entry<String, Double> highestEntry = null;
         for (String month : sortedMonths) {
             if (highestEntry == null || monthlyTotals.get(month) > highestEntry.getValue()) {
                 highestEntry = new AbstractMap.SimpleEntry<>(month, monthlyTotals.get(month));
@@ -310,7 +310,7 @@ public class ExpenseReportsController {
         }
         
         // Find lowest month
-        Map.Entry<String, Float> lowestEntry = null;
+        Map.Entry<String, Double> lowestEntry = null;
         for (String month : sortedMonths) {
             if (lowestEntry == null || monthlyTotals.get(month) < lowestEntry.getValue()) {
                 lowestEntry = new AbstractMap.SimpleEntry<>(month, monthlyTotals.get(month));
@@ -333,25 +333,25 @@ public class ExpenseReportsController {
         }
         
         // Calculate category totals
-        Map<String, Float> categoryTotals = new HashMap<>();
+        Map<String, Double> categoryTotals = new HashMap<>();
         for (Expense expense : expenses) {
             String category = expense.getCategory();
-            categoryTotals.put(category, categoryTotals.getOrDefault(category, 0f) + expense.getAmount());
+            categoryTotals.put(category, categoryTotals.getOrDefault(category, 0d) + expense.getAmount());
         }
         
         // Sort categories by total amount (descending)
-        List<Map.Entry<String, Float>> sortedEntries = categoryTotals.entrySet().stream()
-                .sorted(Map.Entry.<String, Float>comparingByValue().reversed())
-                .limit(5)  // Show top 5 categories
-                .collect(Collectors.toList());
+        List<Map.Entry<String, Double>> sortedEntries = categoryTotals.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .limit(5)
+                .toList();
         
         // Add to grid
         float total = calculateTotal(expenses);
         int row = 0;
-        for (Map.Entry<String, Float> entry : sortedEntries) {
+        for (Map.Entry<String, Double> entry : sortedEntries) {
             String category = entry.getKey();
-            float amount = entry.getValue();
-            float percentage = total > 0 ? (amount / total * 100) : 0;
+            double amount = entry.getValue();
+            double percentage = total > 0 ? (amount / total * 100) : 0;
             
             Label categoryLabel = new Label(category);
             categoryLabel.getStyleClass().add("stat-label");
@@ -377,24 +377,23 @@ public class ExpenseReportsController {
         }
         
         // Calculate payment method totals
-        Map<String, Float> paymentTotals = new HashMap<>();
+        Map<String, Double> paymentTotals = new HashMap<>();
         for (Expense expense : expenses) {
             String paymentMethod = expense.getPaymentMethod();
-            paymentTotals.put(paymentMethod, paymentTotals.getOrDefault(paymentMethod, 0f) + expense.getAmount());
+            paymentTotals.put(paymentMethod, paymentTotals.getOrDefault(paymentMethod, 0d) + expense.getAmount());
         }
         
         // Sort payment methods by total amount (descending)
-        List<Map.Entry<String, Float>> sortedEntries = paymentTotals.entrySet().stream()
-                .sorted(Map.Entry.<String, Float>comparingByValue().reversed())
+        List<Map.Entry<String, Double>> sortedEntries = paymentTotals.entrySet().stream().sorted((Comparator<? super Map.Entry<String, Double>>) Map.Entry.<String, Float>comparingByValue().reversed())
                 .collect(Collectors.toList());
         
         // Add to grid
-        float total = calculateTotal(expenses);
+        double total = calculateTotal(expenses);
         int row = 0;
-        for (Map.Entry<String, Float> entry : sortedEntries) {
+        for (Map.Entry<String, Double> entry : sortedEntries) {
             String paymentMethod = entry.getKey();
-            float amount = entry.getValue();
-            float percentage = total > 0 ? (amount / total * 100) : 0;
+            double amount = entry.getValue();
+            double percentage = total > 0 ? (amount / total * 100) : 0;
             
             Label methodLabel = new Label(paymentMethod);
             methodLabel.getStyleClass().add("stat-label");
@@ -417,20 +416,20 @@ public class ExpenseReportsController {
         }
         
         // Generate category insights
-        Map<String, Float> categoryTotals = new HashMap<>();
+        Map<String, Double> categoryTotals = new HashMap<>();
         for (Expense expense : expenses) {
             categoryTotals.put(expense.getCategory(), 
-                categoryTotals.getOrDefault(expense.getCategory(), 0f) + expense.getAmount());
+                categoryTotals.getOrDefault(expense.getCategory(), 0d) + expense.getAmount());
         }
         
         // Find highest category
-        Map.Entry<String, Float> highestCategory = categoryTotals.entrySet().stream()
+        Map.Entry<String, Double> highestCategory = categoryTotals.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
                 
         if (highestCategory != null) {
-            float total = calculateTotal(expenses);
-            float percentage = (highestCategory.getValue() / total) * 100;
+            double total = calculateTotal(expenses);
+            double percentage = (highestCategory.getValue() / total) * 100;
             
             StringBuilder insight = new StringBuilder();
             insight.append(String.format("Your biggest expense category is %s at $%.2f, ", 
@@ -441,18 +440,18 @@ public class ExpenseReportsController {
             if (expenses.size() > 10) {
                 LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
                 
-                float recentTotal = expenses.stream()
+                double recentTotal = expenses.stream()
                     .filter(e -> e.getDate().isAfter(thirtyDaysAgo))
                     .map(Expense::getAmount)
-                    .reduce(0f, Float::sum);
+                    .reduce(0d, Double::sum);
                     
-                float recentCategoryTotal = expenses.stream()
+                double recentCategoryTotal = expenses.stream()
                     .filter(e -> e.getDate().isAfter(thirtyDaysAgo) && 
                            e.getCategory().equals(highestCategory.getKey()))
                     .map(Expense::getAmount)
-                    .reduce(0f, Float::sum);
+                    .reduce(0d, Double::sum);
                 
-                float recentPercentage = recentTotal > 0 ? (recentCategoryTotal / recentTotal) * 100 : 0;
+                double recentPercentage = recentTotal > 0 ? (recentCategoryTotal / recentTotal) * 100 : 0;
                 
                 if (recentPercentage > percentage + 5) {
                     insight.append(String.format("This category has been trending upward recently."));
@@ -467,12 +466,12 @@ public class ExpenseReportsController {
         }
         
         // Generate payment method insights
-        Map<String, Float> paymentTotals = new HashMap<>();
+        Map<String, Double> paymentTotals = new HashMap<>();
         Map<String, Integer> paymentCounts = new HashMap<>();
         
         for (Expense expense : expenses) {
             String method = expense.getPaymentMethod();
-            paymentTotals.put(method, paymentTotals.getOrDefault(method, 0f) + expense.getAmount());
+            paymentTotals.put(method, paymentTotals.getOrDefault(method, 0d) + expense.getAmount());
             paymentCounts.put(method, paymentCounts.getOrDefault(method, 0) + 1);
         }
         
@@ -482,7 +481,7 @@ public class ExpenseReportsController {
                 .orElse(null);
                 
         // Find highest payment method (by amount)
-        Map.Entry<String, Float> highestPaymentMethod = paymentTotals.entrySet().stream()
+        Map.Entry<String, Double> highestPaymentMethod = paymentTotals.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
                 

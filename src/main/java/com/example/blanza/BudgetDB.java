@@ -65,7 +65,7 @@ public class BudgetDB extends Database<Budget> {
             return budget;
         });
 
-        return budgets.isEmpty() ? null : budgets.get(0);
+        return budgets.isEmpty() ? null : budgets.getFirst();
     }
 
     public void getBudgetsByUserId(int userId) {
