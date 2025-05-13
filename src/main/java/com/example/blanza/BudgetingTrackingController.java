@@ -93,7 +93,7 @@ public class BudgetingTrackingController {
         }
     }
     public void handleDisplayBudgets() {
-        int userId = Session.getCurrentUserId();
+            int userId = SessionService.getCurrentUserId();
         budgetsVBox.getChildren().clear();
         String sql = SQLLoader.get("select_budget_by_user_id");  // Query: SELECT * FROM budgets WHERE user_id = ?
 
@@ -166,7 +166,7 @@ public class BudgetingTrackingController {
             double actualSpend = Double.parseDouble(actualSpendText);
 
 
-            Budgeting budget = BudgetDB.getBudgetByCategory(category, Session.getCurrentUserId());  // Modify this method to retrieve by category and user ID
+            Budgeting budget = BudgetDB.getBudgetByCategory(category, SessionService.getCurrentUserId());  // Modify this method to retrieve by category and user ID
 
             if (budget == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "No budget found for this category.");

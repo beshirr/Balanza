@@ -2,11 +2,15 @@ package com.example.blanza;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Properties;
 
 public class ReminderManager {
     private final PriorityQueue<Reminder> reminderQueue = new PriorityQueue<>();
@@ -105,15 +109,14 @@ public class ReminderManager {
     /**
      * Sends a notification for a specific reminder
      */
-//private void sendNotification(Reminder reminder) {
-//        // TODO: Send an actual email
-//        String body = "NOTIFICATION: " + reminder.toString();
-//        Dotenv dotenv = Dotenv.configure().directory(".").load();
-//        String email = dotenv.get("EMAIL_SENDER");
-//        String password = dotenv.get("PASS");
-//        EmailManager emailManager = new EmailManager(email, password);
-//        emailManager.sendEmail(UserDB.getUserEmailById(Session.getCurrentUserId()), "Balanza Reminder", body);
-//    }
+    private void sendNotification(Reminder reminder) {
+        String fromEmail = Dotenv.configure().directory(".").load().get("EMAIL_SENDER");
+        String password = Dotenv.configure().directory(".").load().get("PASS");
+        String subject = "Reminder: " + reminder.getTitle();
+        String body = "Don't Forget to Pay for " + reminder.getTitle() + " " + reminder.getDescription() + " on " + reminder.getTime().toString();
+        EmailManager emailManager = new EmailManager(fromEmail, password);
+        emailManager.sendEmail(UserDB.getUserEmailById(SessionService.getCurrentUserId()), subject, body);
+    }
 
     /**
      * Starts the reminder service thread

@@ -17,39 +17,12 @@ public class AuthenticationService {
      * @param email the email
      * @param OTP   the otp
      */
-    public static void sendOTP(String email, String OTP){
-        String senderEmail = "blanzaauth@gmail.com";
-        final String username = "balanzaauth@gmail.com";
-        final String password = "euzavaleirdudutp";
-        Properties properties = new Properties();
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
-        Authenticator authenticator = new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        };
-
-        Session session = Session.getInstance(properties, authenticator);
-        try {
-            Message mail = new MimeMessage(session);
-            mail.setFrom(new InternetAddress(senderEmail));
-            mail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
-            mail.setSubject("Your Balanza verification code");
-            mail.setContent("Hello " + email + " this is your verification code: " + OTP, "text/html;charset=UTF-8");
-            Transport.send(mail);
-        } catch (MessagingException e){
-            e.printStackTrace();
-        }
-//        Dotenv dotenv = Dotenv.configure().directory(".").load();
-//        String body = "Hello" + email + " this is your verification code: " + OTP;
-//        String subject = "Your Balanza verification code";
-//        String fromEmail = dotenv.get("EMAIL_SENDER");
-//        String password = dotenv.get("PASS");
-//        EmailManager emailManager = new EmailManager(email, password);
-//        emailManager.sendEmail(fromEmail, subject, body);
+    public static void sendOTP(String email, String OTP) {
+        Dotenv dotenv = Dotenv.configure().directory(".").load();
+        String fromEmail = dotenv.get("EMAIL_SENDER");
+        String password = dotenv.get("PASS");
+        EmailManager emailManager = new EmailManager(fromEmail, password);
+        emailManager.sendEmail(email, "Your Balanza verification code", "Hello " + email + " this is your verification code: " + OTP);
     }
 
     /**
